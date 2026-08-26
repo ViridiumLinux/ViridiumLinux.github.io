@@ -1,87 +1,474 @@
 # Viridium Linux
 
-Viridium is a minimal, Arch-based Linux distro. Under the hood it's just Arch — same packages, same repos, same everything — but it comes with its own installer and its own way of managing packages, built around one idea: **you shouldn't need two different tools (pacman and an AUR helper) to manage your system.**
+Viridium Linux is a minimal, Arch-based Linux distribution built around a custom installation and package-management system.
 
-That one tool is `vbuild`. There's also `viridium`, a small command for everyday maintenance. Both are covered below.
+Viridium uses the Arch Linux package ecosystem, including the official repositories and the AUR. The underlying system remains familiar to Arch users, while Viridium adds its own tools and conventions on top.
 
-## Installing it
+The main components are:
 
-Boot the live environment and run:
+* `vinstall` — the Viridium installation system
+* `vbuild` — the primary package manager
+* `viridium` — system management and maintenance utility
+* NetworkManager — network configuration
+* `systemd-boot` — bootloader used by the installer
 
-```bash
+The main design goal is to keep the normal Arch package ecosystem while simplifying package management. In particular, `vbuild` combines the official repositories and the AUR into a single package-management interface instead of requiring separate tools for each.
+
+`vbuild` also uses a faster workflow than the traditional `pacman` + AUR helper setup.
+
+---
+
+# Installation
+
+## Requirements
+
+A Viridium installation requires:
+
+* A UEFI-capable system
+* A network connection
+* A disk with 5gb of space for the minimal installation (Though i recommend more than 20gb.)
+
+Viridium currently installs through the live environment and downloads packages during installation.
+
+## Starting the installer
+
+Boot the Viridium live environment and run:
+
+```bash id="y8z8p6"
 vinstall
 ```
 
-It'll walk you through picking a kernel, hostname, timezone, and username, then ask how you want to partition:
+The installer handles the initial system setup, filesystem configuration, package installation, user creation, and bootloader configuration.
 
-- **Wipe the whole disk** — simplest option if this is the only OS going on the machine.
-- **Use existing partitions** — pick a root partition to install onto and an EFI partition to boot from. If you're dual-booting, point it at your existing EFI partition rather than making a new one — Viridium won't touch anything else already there (like a Windows or existing Arch entry), it just adds itself alongside.
+## Installation options
 
-Each destructive step asks for a typed confirmation before it does anything, so there's a chance to back out if you picked the wrong disk.
+`vinstall` provides two main disk configuration modes.
 
-You'll need UEFI firmware and a network connection for the install to complete — it downloads packages as it goes, the same way a normal Arch install does.
+### Wipe the entire disk
 
-Once it's done and you reboot, you'll land on a login prompt. The first time you log in, you'll get a short one-time message explaining the pacman/vbuild thing below — after that it won't show again. Your user is already set up with `sudo`, so you're ready to go right away.
+This mode partitions the selected disk automatically and installs Viridium onto it.
 
-## Day to day: installing and updating things
+It is intended for systems where Viridium will be the only operating system on the disk.
 
-This is the main thing that's different about Viridium. `vbuild` is your package manager — it searches and installs from both the official Arch repos and the AUR, so you never have to think about which one something comes from:
+Because this mode is destructive, the installer requires an explicit typed confirmation before continuing.
 
-```bash
-vbuild -S firefox     # install something
-vbuild -Ss firefox     # not sure of the exact name? search first
-vbuild -Syu            # update everything
-vbuild -Rns firefox    # remove something, and anything it needed that's now unused
-vbuild -Yc             # clean up leftover orphaned packages
+### Use existing partitions
+
+Existing partitions can be selected instead of partitioning an entire disk.
+
+At minimum, the installation requires:
+
+* A root filesystem partition
+* An EFI System Partition
+
+This mode is intended for existing installations and dual-boot configurations.
+
+An existing EFI System Partition can be reused. Viridium does not need to create a new EFI partition when one is already available.
+
+Existing boot entries are left in place. For example, a Windows Boot Manager entry can remain alongside the Viridium boot entry.
+
+Destructive operations require confirmation before they are performed.
+
+## Kernel selection
+
+The installer allows the kernel to be selected during installation.
+
+The selected kernel is installed into the new system and used for normal booting.
+
+## Hostname
+
+The hostname is configured during installation.
+
+This becomes the system hostname after the first boot.
+
+## Timezone
+
+A timezone is selected during installation and applied to the installed system, which you choose!
+
+## User creation
+
+A user account is created during installation.
+
+The account is configured for `sudo`, allowing administrative commands to be run without logging into the root account directly.
+
+## Bootloader
+
+Viridium installs and configures `systemd-boot` on UEFI systems.
+
+The bootloader is installed to the EFI System Partition selected during installation.
+
+## Network requirements
+
+An internet connection is required during installation because packages are downloaded from the configured repositories.
+
+---
+
+# Package management
+
+## vbuild
+
+`vbuild` is the primary package manager in Viridium.
+
+It is designed around two main problems with the traditional Arch package-management workflow:
+
+1. Official repository packages and AUR packages normally require different tools.
+2. Using a separate AUR helper alongside `pacman` adds extra overhead to package management.
+
+`vbuild` combines both sources into one interface.
+
+A package does not need to be handled differently just because it comes from the AUR rather than an official repository.
+
+The command syntax is intentionally similar to `pacman`, making the transition easier for existing Arch users.
+
+## Package sources
+
+`vbuild` can work with:
+
+* Official Arch Linux repositories
+* The Arch User Repository (AUR)
+
+The official repositories remain the primary source for packages where available. The AUR provides additional packages that are not available in the official repositories.
+
+`vbuild` handles the distinction internally.
+
+## Installing packages
+
+```bash id="4m5q0k"
+vbuild -S package
 ```
 
-If you've used `pacman` or `yay` before, these flags will feel familiar — that's on purpose.
+For example:
 
-For quicker day-to-day use, `viridium` wraps the common ones:
-
-```bash
-viridium update    # same as vbuild -Syu
-viridium clean      # same as vbuild -Yc
-viridium info        # kernel, hostname, uptime, package count
-viridium doctor      # checks DNS, disk space, orphaned packages, etc.
+```bash id="f6h0qn"
+vbuild -S firefox
 ```
 
-Run `viridium help` any time for the full list.
+The package can come from the official repositories or the AUR.
 
-### Why can't I just use pacman?
+## Searching
 
-You'll notice `pacman` and `yay` themselves refuse to run directly — that's intentional, not a bug. It's there so you always go through `vbuild`, which keeps the repo and AUR sides of things in sync. If you type one of them by mistake, Viridium will actually notice and offer to run the equivalent `vbuild` command for you on the spot, so it's rarely more than pressing enter.
-
-If you genuinely need the real, unmodified tools — say, a script that expects stock pacman behaviour — you can open them back up temporarily:
-
-```bash
-sudo viridium unlock       # allows real pacman/yay for 10 minutes
-sudo viridium unlock 30    # or specify how long
-sudo viridium lock         # re-lock early, if you're done sooner
+```bash id="7b8u5u"
+vbuild -Ss search-term
 ```
 
-They lock themselves back up automatically once the timer's up, so there's nothing to remember to undo.
+For example:
 
-## Getting online
+```bash id="fprx6x"
+vbuild -Ss firefox
+```
 
-NetworkManager is running out of the box. If you're not on ethernet:
+This searches the available package sources.
 
-```bash
+## Updating the system
+
+```bash id="svz5m2"
+vbuild -Syu
+```
+
+This updates the installed system using the configured repositories and AUR sources.
+
+## Removing packages
+
+```bash id="7a2w4e"
+vbuild -Rns package
+```
+
+This removes the selected package and cleans up dependencies that are no longer required.
+
+## Cleaning orphaned packages
+
+```bash id="k3w7w5"
+vbuild -Yc
+```
+
+This removes packages that are no longer required by another installed package.
+
+## Why vbuild exists
+
+The primary reason for `vbuild` is the combination of the official repositories and AUR.
+
+A normal Arch setup often looks like:
+
+```text
+pacman → official repositories
+yay    → AUR
+```
+
+Viridium instead uses:
+
+```text
+vbuild → official repositories + AUR
+```
+
+This means package installation, searching, and updates can all be handled through one tool.
+
+`vbuild` is also designed to reduce the overhead involved in the traditional two-tool workflow, making common package operations faster.
+
+---
+
+# pacman and yay
+
+## Default behaviour
+
+Direct use of `pacman` and `yay` is disabled by default.
+
+This is intentional, as vbuild is our faster alternative.
+
+Allowing every package operation to be performed through several different tools would undermine the purpose of `vbuild`. Viridium expects normal package management to go through `vbuild`.
+
+This also keeps the official-repository and AUR workflows together instead of having separate package-management paths.
+
+## Command detection
+
+If `pacman` or `yay` is run directly, Viridium detects the command.
+
+Instead of simply failing, the system can show the equivalent `vbuild` command and offer to run it.
+
+For example, a command intended for `pacman` can be translated into the corresponding `vbuild` operation.
+
+## Unlocking the original tools
+
+Some software may genuinely require the normal `pacman` or `yay` binaries.
+
+The tools can therefore be temporarily unlocked.
+
+```bash id="5vqu6m"
+sudo viridium unlock
+```
+
+This enables the original tools for the default unlock period.
+
+A custom duration can be specified in minutes:
+
+```bash id="8g5k5v"
+sudo viridium unlock 30
+```
+
+The tools can also be locked manually:
+
+```bash id="5s5j50"
+sudo viridium lock
+```
+
+The unlock automatically expires after the configured period, returning the system to the normal Viridium package-management setup.
+
+---
+
+# viridium
+
+`viridium` is the general system-management command.
+
+Unlike `vbuild`, which focuses on packages, `viridium` handles common maintenance tasks and system information.
+
+## Help
+
+```bash id="2z6k4a"
+viridium help
+```
+
+Displays the available commands.
+
+## Updating
+
+```bash id="5a8q0y"
+viridium update
+```
+
+Runs the normal system update through `vbuild`.
+
+Equivalent to:
+
+```bash id="6f8j7d"
+vbuild -Syu
+```
+
+## Cleaning
+
+```bash id="0b2m3x"
+viridium clean
+```
+
+Cleans up orphaned packages and other removable package data.
+
+Equivalent to:
+
+```bash id="7k7x8n"
+vbuild -Yc
+```
+
+## System information
+
+```bash id="d5s0t4"
+viridium info
+```
+
+Displays basic information about the current installation, including:
+
+* Kernel
+* Hostname
+* Uptime
+* Installed package count
+
+## Diagnostics
+
+```bash id="v6y2j1"
+viridium doctor
+```
+
+`viridium doctor` checks the system for common problems.
+
+Checks include:
+
+* DNS
+* Disk space
+* Orphaned packages
+* Failed services
+* Other basic system conditions
+
+The output is intended to explain the problem rather than simply returning an error code.
+
+### Automatic fixes
+
+Some problems can be fixed automatically:
+
+```bash id="1u4n3h"
+viridium doctor --fix
+```
+
+Only issues that can be safely handled automatically are modified.
+
+---
+
+# Networking
+
+Viridium uses NetworkManager for network management.
+
+NetworkManager is enabled by default after installation.
+
+## nmtui
+
+For an interactive terminal interface:
+
+```bash id="5v3e7s"
 nmtui
 ```
 
-is the easiest way to connect to Wi-Fi — a simple text menu, no flags to remember. `nmcli` is there too if you'd rather script it.
+`nmtui` provides a text-based menu for connecting to Wi-Fi and managing network connections.
 
-## When something's not working
+## nmcli
 
-**`viridium doctor`** is the first thing to reach for — it checks the usual suspects (DNS, disk space, orphaned packages, failed services) and tells you plainly what it finds. Add `--fix` and it'll sort out what it safely can on its own.
+`nmcli` can also be used for command-line network configuration.
 
-**Running low on disk space?**
-```bash
+It is useful for scripting or users who prefer direct command-line control.
+
+---
+
+# First login
+
+The first login after installation includes a one-time information message.
+
+The message explains the Viridium package-management setup, including:
+
+* `vbuild`
+* `pacman`
+* `yay`
+* The reason `pacman` and `yay` are normally locked
+
+The message is only shown once.
+
+Afterwards, normal logins go directly to the shell.
+
+---
+
+# System maintenance
+
+Viridium's maintenance tools are intended to cover the most common tasks without requiring the user to remember multiple commands.
+
+A basic maintenance routine can therefore be done with:
+
+```bash id="xw4i6c"
+viridium update
+viridium doctor
 viridium clean
 ```
-clears out orphaned packages, which is usually most of it.
 
-**Need the real pacman/yay for something specific?** See the unlock command above.
+`vbuild` remains available when more direct package-management control is required.
 
-**Can't boot at all?** Everything under the hood is standard Arch, so normal Arch recovery steps apply — boot a live USB, mount your root partition, and go from there. The one Viridium-specific detail worth knowing: the root filesystem is labelled `viridium_root`, which can help you identify it quickly with `lsblk -f`.
+## Running low on disk space
+
+The first thing to check is usually:
+
+```bash id="q7u6j2"
+viridium clean
+```
+
+This removes orphaned packages and other package data that is no longer required.
+
+For a more detailed check of the system:
+
+```bash id="4y5k1q"
+viridium doctor
+```
+
+---
+
+# Command reference
+
+## vbuild
+
+| Command               | Purpose                                  |
+| --------------------- | ---------------------------------------- |
+| `vbuild -S package`   | Install a package                        |
+| `vbuild -Ss term`     | Search for packages                      |
+| `vbuild -Syu`         | Update the system                        |
+| `vbuild -Rns package` | Remove a package and unused dependencies |
+| `vbuild -Yc`          | Remove orphaned packages                 |
+
+## viridium
+
+| Command                 | Purpose                               |
+| ----------------------- | ------------------------------------- |
+| `viridium help`         | Show available commands               |
+| `viridium update`       | Update the system                     |
+| `viridium clean`        | Clean orphaned packages               |
+| `viridium info`         | Display system information            |
+| `viridium doctor`       | Check for common problems             |
+| `viridium doctor --fix` | Automatically fix supported problems  |
+| `viridium unlock`       | Temporarily unlock `pacman` and `yay` |
+| `viridium unlock 30`    | Unlock for 30 minutes                 |
+| `viridium lock`         | Lock `pacman` and `yay` immediately   |
+
+## Networking
+
+| Command | Purpose                                  |
+| ------- | ---------------------------------------- |
+| `nmtui` | Interactive NetworkManager configuration |
+| `nmcli` | Command-line NetworkManager control      |
+
+---
+
+# Design overview
+
+Viridium keeps the underlying Arch ecosystem rather than creating a separate package ecosystem.
+
+The main additions are the tools surrounding it:
+
+```text
+                    Viridium Linux
+                          │
+          ┌───────────────┴───────────────┐
+          │                               │
+       vinstall                        Runtime
+          │                               │
+    System setup                ┌─────────┴─────────┐
+                                │                   │
+                              vbuild            viridium
+                                │                   │
+                     ┌──────────┴──────────┐        │
+                     │                     │        │
+                 Arch repos               AUR    Maintenance
+```
+
+This keeps Viridium compatible with the Arch package ecosystem while giving the distribution its own installation and management workflow.
+
+The goal is not to replace the Arch ecosystem, but to provide a simpler interface around it — particularly for users who want official repository and AUR packages handled through one tool without giving up the underlying Arch system.
