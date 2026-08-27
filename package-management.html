@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Package management - Viridium Wiki</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --text-muted: #bcada1; --accent: #ff8838; --accent-light: #ffd4b8; --border: #382414; } body { font-family: system-ui, sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; line-height: 1.6; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px 20px; position: fixed; height: 100vh; display: flex; flex-direction: column; box-sizing: border-box; } .sidebar-content { flex: 1; overflow-y: auto; } aside h2 { font-size: 1.15rem; margin-top: 0; display: flex; align-items: center; gap: 8px; color: var(--accent-light); font-weight: 600; text-transform: uppercase; } aside ul { list-style: none; padding: 0; margin: 0; } aside li { margin-bottom: 8px; } aside a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; display: block; padding: 6px 10px; border-radius: 6px; } aside a:hover { color: var(--accent); background: rgba(255, 136, 56, 0.08); } .download-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #ff8838 0%, #d45d00 100%); color: #141210 !important; font-weight: bold; text-decoration: none; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 0.95rem; text-align: center; } main { flex: 1; padding: 40px 60px; margin-left: 280px; max-width: 850px; } h1 { color: var(--accent); font-size: 2.2rem; margin-top: 0; background: linear-gradient(135deg, #ff8838 0%, #ffd4b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } h2 { color: var(--accent); font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 40px; } code { background: rgba(255, 136, 56, 0.1); color: var(--accent-light); padding: 3px 6px; border-radius: 4px; font-family: monospace; border: 1px solid rgba(255, 136, 56, 0.2); } pre { background: #0c0a09; padding: 18px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; margin: 20px 0; } pre code { color: var(--text-main); background: none; padding: 0; } .diagram-block { background: #0c0a09; color: var(--text-main); font-family: monospace; line-height: 1.4; border: 1px solid var(--border); padding: 15px; border-radius: 8px; white-space: pre; overflow-x: auto; margin: 20px 0; } .diagram-block a { border-bottom: none; } main a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); } main a:hover { border-bottom-style: solid; } p { margin: 16px 0; color: #e4ded5; } .table-container { overflow-x: auto; margin: 25px 0; border: 1px solid var(--border); border-radius: 8px; } table { width: 100%; border-collapse: collapse; background: var(--bg-sidebar); } th { background: #1a1512; color: var(--accent); padding: 12px 16px; border-bottom: 2px solid var(--border); text-align: left; } td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #e4ded5; text-align: left; }</style></head><body><aside><div class="sidebar-content"><h2>Viridium Wiki</h2><ul><li><a href="home.html">Home</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="vbuild.html">vbuild</a></li>
+<li><a href="viridium.html">viridium</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="boot-and-uefi.html">Boot and UEFI</a></li>
+<li><a href="development.html">Development</a></li>
+<li><a href="networking.html">Networking</a></li>
+<li><a href="package-management.html" style="color:#ff8838;background:rgba(255,136,56,0.08);font-weight:bold;">Package management</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="faq.html">FAQ</a></li>
+</ul></div><a href="Viridium-Linux.iso" class="download-btn" download>INSTALL VIRIDIUM ISO</a></aside><main><h1>Package Management</h1>
+<p>Viridium uses <code>vbuild</code> as its normal package-management interface.</p>
+<h2>Package sources</h2>
+<p>Viridium uses the same general package ecosystem as Arch Linux:</p>
+<li>Official Arch repositories</li>
+<li>Arch User Repository (AUR)</li>
+<code>vbuild</code> handles both sources.
+<h2>Official repositories</h2>
+<p>Packages available through the normal Arch repositories are installed through <code>vbuild</code>:</p>
+<pre><code>vbuild -S package
+</code></pre>
+<h2>AUR</h2>
+<p>Packages available through the AUR are also handled through <code>vbuild</code>.</p>
+<p>The user does not need to switch to <code>yay</code> or another AUR helper for normal package installation.</p>
+<h2>Package management model</h2>
+<p>The intended model is:</p>
+<pre class="diagram-block">                 vbuild
+                /      \
+               /        \
+      Arch repositories  AUR
+</pre>
+<p>rather than:</p>
+<pre><code>pacman ──→ Arch repositories
+yay ─────→ AUR
+</code></pre>
+<p>This provides one entry point for package management.</p>
+<h2>Why pacman and yay are locked</h2>
+<code>pacman</code> and <code>yay</code> are disabled for normal direct use.
+<p>The purpose is to prevent multiple package-management paths from being used at the same time.</p>
+<p>For example, a normal Viridium system should generally be managed through:</p>
+<pre><code>vbuild -Syu
+</code></pre>
+<p>rather than independently running <code>pacman</code> and <code>yay</code>.</p>
+<p>This also allows Viridium's package-management workflow to remain consistent.</p>
+<h2>Command translation</h2>
+<p>If a user runs <code>pacman</code> or <code>yay</code> directly, Viridium can detect the command and provide the equivalent <code>vbuild</code> command.</p>
+<p>This makes accidentally using the wrong command less disruptive.</p>
+<h2>Unlocking</h2>
+<p>When direct access to the original tools is actually required:</p>
+<pre><code>sudo viridium unlock
+</code></pre>
+<p>A custom duration can be specified:</p>
+<pre><code>sudo viridium unlock 30
+</code></pre>
+<p>Lock them immediately with:</p>
+<pre><code>sudo viridium lock
+</code></pre>
+<p>The tools automatically lock again after the timeout.</p>
+<h2>When should pacman or yay be unlocked?</h2>
+<p>The normal answer is: only when something specifically requires them.</p>
+<p>Examples include:</p>
+<li>Testing package-management behaviour</li>
+<li>Development</li>
+<li>Scripts expecting the original commands</li>
+<li>Debugging package-manager issues</li>
+<p>For normal package installation and updates, use <code>vbuild</code>.</p></main></body></html>
