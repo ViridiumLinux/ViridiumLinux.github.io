@@ -1,23 +1,438 @@
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll(".wiki-page-content").forEach(p => p.style.display = "none");
-            document.querySelectorAll("aside a").forEach(l => l.classList.remove("active-link"));
-            const targetPage = document.getElementById("page-" + pageId);
-            if (targetPage) {
-                targetPage.style.display = "block";
-                const activeLink = document.getElementById("link-" + pageId);
-                if (activeLink) activeLink.classList.add("active-link");
-                window.scrollTo(0, 0);
-            }
-        }
-        window.addEventListener("DOMContentLoaded", () => {
-            const hash = window.location.hash.replace("#", "") || "home";
-            showPage(hash);
-        });
-        window.addEventListener("hashchange", () => {
-            const hash = window.location.hash.replace("#", "") || "home";
-            showPage(hash);
-        });
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Home — Viridium Linux</title>
+
+    <style>
+
+:root {
+    --background: #141210;
+    --sidebar: #1f1a16;
+    --sidebar-hover: #2a211b;
+    --border: #382414;
+    --accent: #ff8838;
+    --accent-hover: #ff9d59;
+    --text: #e9e2dc;
+    --muted: #a79c93;
+    --code: #191512;
+    --table-alt: #191512;
+    --blockquote: #201913;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    line-height: 1.7;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------------------------
+   Sidebar
+   ------------------------------------------------------------ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    overflow-y: auto;
+
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+
+    padding: 28px 20px;
+}
+
+.logo {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo-title {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.nav-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px 4px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.nav a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 6px;
+    color: #cfc6bf;
+    font-size: 14px;
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.nav a:hover {
+    background: var(--sidebar-hover);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav a.active {
+    background: #2b211a;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.install-button {
+    display: block;
+    margin-top: 25px;
+    padding: 11px 14px;
+
+    background: var(--accent);
+    color: #17110d;
+
+    border-radius: 6px;
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition:
+        background 0.12s ease,
+        transform 0.12s ease;
+}
+
+.install-button:hover {
+    background: var(--accent-hover);
+    color: #17110d;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Content
+   ------------------------------------------------------------ */
+
+.content {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    padding: 55px 65px 80px;
+}
+
+.article {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f4eee9;
+    line-height: 1.25;
+    margin-top: 1.7em;
+    margin-bottom: 0.65em;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 27px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+p {
+    margin: 0 0 16px;
+}
+
+strong {
+    color: #fff5ed;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 35px 0;
+}
+
+/* ------------------------------------------------------------
+   Code
+   ------------------------------------------------------------ */
+
+code {
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+
+    color: #f0d6c3;
+    font-family:
+        "JetBrains Mono",
+        "Cascadia Code",
+        "Fira Code",
+        Consolas,
+        monospace;
+
+    font-size: 0.9em;
+}
+
+pre {
+    margin: 22px 0;
+    padding: 18px;
+
+    overflow-x: auto;
+
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    line-height: 1.55;
+}
+
+pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: #ddd3cb;
+    font-size: 13px;
+}
+
+/* ------------------------------------------------------------
+   Tables
+   ------------------------------------------------------------ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 22px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    border: 1px solid var(--border);
+    background: var(--background);
+}
+
+th,
+td {
+    padding: 10px 13px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: #211a15;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: var(--table-alt);
+}
+
+/* ------------------------------------------------------------
+   Lists
+   ------------------------------------------------------------ */
+
+ul,
+ol {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    padding-left: 28px;
+}
+
+li {
+    margin: 4px 0;
+}
+
+/* ------------------------------------------------------------
+   Blockquotes
+   ------------------------------------------------------------ */
+
+blockquote {
+    margin: 20px 0;
+    padding: 10px 18px;
+
+    background: var(--blockquote);
+    border-left: 3px solid var(--accent);
+
+    color: #c5bbb3;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.footer {
+    margin-top: 70px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 800px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+        padding: 35px 22px 60px;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install-button {
+        margin-bottom: 5px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-title">Viridium Linux</div>
+            <div class="logo-subtitle">Documentation</div>
+        </div>
+
+        <div class="nav-title">Documentation</div>
+
+        <nav class="nav">
+            <a href="https://github.io/" class="active">Home</a>
+<a href="https://github.io/installation/">Installation</a>
+<a href="https://github.io/configuration/">Configuration</a>
+<a href="https://github.io/vbuild/">vbuild</a>
+<a href="https://github.io/viridium/">viridium</a>
+<a href="https://github.io/architecture/">Architecture</a>
+<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
+<a href="https://github.io/development/">Development</a>
+<a href="https://github.io/networking/">Networking</a>
+<a href="https://github.io/package-management/">Package management</a>
+<a href="https://github.io/troubleshooting/">Troubleshooting</a>
+<a href="https://github.io/faq/">FAQ</a>
+        </nav>
+
+        <a
+            class="install-button"
+            href="https://github.com"
+        >
+            Install Viridium Linux
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <article class="article">
+            <p>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Viridium Linux&lt;/h1&gt;&lt;p&gt;Viridium Linux is a minimal, Arch-based Linux distribution.&lt;/p&gt;&lt;p&gt;It uses the Arch Linux package ecosystem, including the official repositories and the AUR, while providing its own installer and system-management tools.&lt;/p&gt;&lt;p&gt;Viridium is designed to keep the parts of Arch that are useful and familiar while making a few parts of the system simpler to use.</p>
+<p>&lt;h2&gt;vbuild&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; is the main package manager in Viridium.&lt;/p&gt;&lt;p&gt;Its primary purpose is combining the &lt;strong&gt;official Arch repositories and the AUR&lt;/strong&gt; into one package-management interface.&lt;/p&gt;&lt;p&gt;On a normal Arch installation, package management commonly looks like:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;pacman → official repositories yay    → AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Viridium instead uses:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;vbuild → official repositories + AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This means you don't have to switch between two different programs depending on where a package comes from.&lt;/p&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; is also designed around a faster workflow than the traditional &lt;code inline=""&gt;pacman&lt;/code&gt; + AUR helper setup.&lt;/p&gt;&lt;p&gt;Its command syntax is intentionally similar to &lt;code inline=""&gt;pacman&lt;/code&gt;, so existing Arch users don't have to learn an entirely different command structure.&lt;/p&gt;&lt;h2&gt;vinstall&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;vinstall&lt;/code&gt; is the Viridium installer.&lt;/p&gt;&lt;p&gt;It handles the initial system setup, including:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Disk configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Filesystems&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Kernel selection&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Hostname&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Timezone&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;User creation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Base package installation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;EFI configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Bootloader installation&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It can either wipe an entire disk or install using existing partitions.&lt;/p&gt;&lt;h2&gt;viridium&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;viridium&lt;/code&gt; is the general system-management command.&lt;/p&gt;&lt;p&gt;It provides commands for things such as:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;viridium update viridium clean viridium info viridium doctor &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It also manages the temporary unlocking of &lt;code inline=""&gt;pacman&lt;/code&gt; and &lt;code inline=""&gt;yay&lt;/code&gt;.&lt;/p&gt;&lt;h2&gt;Package management&lt;/h2&gt;&lt;p&gt;Normal package management should be done through &lt;code inline=""&gt;vbuild&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -S firefox &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Update the system with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Syu &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Search for a package with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Ss firefox &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;See [[vbuild]] for the full command reference.&lt;/p&gt;&lt;h2&gt;Installation&lt;/h2&gt;&lt;p&gt;Boot the Viridium live environment and run:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vinstall &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;See [[Installation]] for the complete installation procedure.&lt;/p&gt;&lt;h2&gt;Getting help&lt;/h2&gt;&lt;p&gt;For system diagnostics:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;viridium doctor &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For command help:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;viridium help &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The [[Troubleshooting]] page covers common problems and their solutions.&lt;/p&gt;&lt;h2&gt;Wiki pages&lt;/h2&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;[[Installation]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[Boot and UEFI]]&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Package management&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;[[vbuild]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[Package Management]]&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;System management&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;[[viridium]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[Networking]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[Configuration]]&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Troubleshooting&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;[[Troubleshooting]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[FAQ]]&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Development&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;[[Architecture]]&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;[[Development]]&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</p>
+
+            <div class="footer">
+                Viridium Linux · Documentation
+            </div>
+        </article>
+
+    </main>
+
+</div>
+
 </body>
 </html>

@@ -1,143 +1,502 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Troubleshooting</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --accent: #ff8838; --border: #382414; } body { font-family: sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px; position: fixed; height: 100vh; } aside ul { list-style: none; padding: 0; } aside li { margin-bottom: 10px; } aside a { color: #bcada1; text-decoration: none; } .download-btn { display: block; background: #ff8838; color: #141210 !important; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; text-decoration: none; } main { flex: 1; padding: 40px 60px; margin-left: 280px; } h1, h2, h3 { color: var(--accent); } pre { background: #0c0a09; padding: 15px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }</style></head><body><aside><h2>Viridium Wiki</h2><ul><li><a href="https://github.iohome/">Home</a></li><li><a href="https://github.ioinstallation/">Installation</a></li><li><a href="https://github.ioconfiguration/">Configuration</a></li><li><a href="https://github.iovbuild/">vbuild</a></li><li><a href="https://github.ioviridium/">viridium</a></li><li><a href="https://github.ioarchitecture/">Architecture</a></li><li><a href="https://github.ioboot-and-uefi/">Boot and UEFI</a></li><li><a href="https://github.iodevelopment/">Development</a></li><li><a href="https://github.ionetworking/">Networking</a></li><li><a href="https://github.iopackage-management/">Package management</a></li><li><a href="https://github.iotroubleshooting/">Troubleshooting</a></li><li><a href="https://github.iofaq/">FAQ</a></li></ul><a href="https://github.com" class="download-btn">INSTALL VIRIDIUM ISO</a></aside><main><h1>Troubleshooting</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-This page covers some of the more common problems encountered while using Viridium.
+    <title>Troubleshooting — Viridium Linux</title>
 
+    <style>
+
+:root {
+    --background: #141210;
+    --sidebar: #1f1a16;
+    --sidebar-hover: #2a211b;
+    --border: #382414;
+    --accent: #ff8838;
+    --accent-hover: #ff9d59;
+    --text: #e9e2dc;
+    --muted: #a79c93;
+    --code: #191512;
+    --table-alt: #191512;
+    --blockquote: #201913;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    line-height: 1.7;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------------------------
+   Sidebar
+   ------------------------------------------------------------ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    overflow-y: auto;
+
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+
+    padding: 28px 20px;
+}
+
+.logo {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo-title {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.nav-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px 4px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.nav a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 6px;
+    color: #cfc6bf;
+    font-size: 14px;
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.nav a:hover {
+    background: var(--sidebar-hover);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav a.active {
+    background: #2b211a;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.install-button {
+    display: block;
+    margin-top: 25px;
+    padding: 11px 14px;
+
+    background: var(--accent);
+    color: #17110d;
+
+    border-radius: 6px;
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition:
+        background 0.12s ease,
+        transform 0.12s ease;
+}
+
+.install-button:hover {
+    background: var(--accent-hover);
+    color: #17110d;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Content
+   ------------------------------------------------------------ */
+
+.content {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    padding: 55px 65px 80px;
+}
+
+.article {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f4eee9;
+    line-height: 1.25;
+    margin-top: 1.7em;
+    margin-bottom: 0.65em;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 27px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+p {
+    margin: 0 0 16px;
+}
+
+strong {
+    color: #fff5ed;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 35px 0;
+}
+
+/* ------------------------------------------------------------
+   Code
+   ------------------------------------------------------------ */
+
+code {
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+
+    color: #f0d6c3;
+    font-family:
+        "JetBrains Mono",
+        "Cascadia Code",
+        "Fira Code",
+        Consolas,
+        monospace;
+
+    font-size: 0.9em;
+}
+
+pre {
+    margin: 22px 0;
+    padding: 18px;
+
+    overflow-x: auto;
+
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    line-height: 1.55;
+}
+
+pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: #ddd3cb;
+    font-size: 13px;
+}
+
+/* ------------------------------------------------------------
+   Tables
+   ------------------------------------------------------------ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 22px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    border: 1px solid var(--border);
+    background: var(--background);
+}
+
+th,
+td {
+    padding: 10px 13px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: #211a15;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: var(--table-alt);
+}
+
+/* ------------------------------------------------------------
+   Lists
+   ------------------------------------------------------------ */
+
+ul,
+ol {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    padding-left: 28px;
+}
+
+li {
+    margin: 4px 0;
+}
+
+/* ------------------------------------------------------------
+   Blockquotes
+   ------------------------------------------------------------ */
+
+blockquote {
+    margin: 20px 0;
+    padding: 10px 18px;
+
+    background: var(--blockquote);
+    border-left: 3px solid var(--accent);
+
+    color: #c5bbb3;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.footer {
+    margin-top: 70px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 800px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+        padding: 35px 22px 60px;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install-button {
+        margin-bottom: 5px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-title">Viridium Linux</div>
+            <div class="logo-subtitle">Documentation</div>
+        </div>
+
+        <div class="nav-title">Documentation</div>
+
+        <nav class="nav">
+            <a href="https://github.io/">Home</a>
+<a href="https://github.io/installation/">Installation</a>
+<a href="https://github.io/configuration/">Configuration</a>
+<a href="https://github.io/vbuild/">vbuild</a>
+<a href="https://github.io/viridium/">viridium</a>
+<a href="https://github.io/architecture/">Architecture</a>
+<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
+<a href="https://github.io/development/">Development</a>
+<a href="https://github.io/networking/">Networking</a>
+<a href="https://github.io/package-management/">Package management</a>
+<a href="https://github.io/troubleshooting/" class="active">Troubleshooting</a>
+<a href="https://github.io/faq/">FAQ</a>
+        </nav>
+
+        <a
+            class="install-button"
+            href="https://github.com"
+        >
+            Install Viridium Linux
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <article class="article">
+            <h1>Troubleshooting</h1>
+<p>This page covers some of the more common problems encountered while using Viridium.</p>
 <h2>Start with viridium doctor</h2>
-
-For general problems, run:
-
-<pre><code>viridium doctor
-</code></pre>
-
-It checks several common system conditions and reports anything it finds.
-
-If supported fixes are available:
-
-<pre><code>viridium doctor --fix
-</code></pre>
-
+<p>For general problems, run:</p>
+<pre><code>viridium doctor</code></pre>
+<p>It checks several common system conditions and reports anything it finds.</p>
+<p>If supported fixes are available:</p>
+<pre><code>viridium doctor --fix</code></pre>
 <h2>No network connection</h2>
-
-Check NetworkManager:
-
-<pre><code>systemctl status NetworkManager
-</code></pre>
-
-If it is not working correctly:
-
-<pre><code>sudo systemctl restart NetworkManager
-</code></pre>
-
-For Wi-Fi:
-
-<pre><code>nmtui
-</code></pre>
-
+<p>Check NetworkManager:</p>
+<pre><code>systemctl status NetworkManager</code></pre>
+<p>If it is not working correctly:</p>
+<pre><code>sudo systemctl restart NetworkManager</code></pre>
+<p>For Wi-Fi:</p>
+<pre><code>nmtui</code></pre>
 <h2>DNS problems</h2>
-
-Run:
-
-<pre><code>viridium doctor
-</code></pre>
-
-You can also inspect the resolver configuration:
-
-<pre><code>resolvectl status
-</code></pre>
-
+<p>Run:</p>
+<pre><code>viridium doctor</code></pre>
+<p>You can also inspect the resolver configuration:</p>
+<pre><code>resolvectl status</code></pre>
 <h2>Low disk space</h2>
-
-Check the system:
-
-<pre><code>viridium doctor
-</code></pre>
-
-Then clean unused package data:
-
-<pre><code>viridium clean
-</code></pre>
-
-Or directly:
-
-<pre><code>vbuild -Yc
-</code></pre>
-
+<p>Check the system:</p>
+<pre><code>viridium doctor</code></pre>
+<p>Then clean unused package data:</p>
+<pre><code>viridium clean</code></pre>
+<p>Or directly:</p>
+<pre><code>vbuild -Yc</code></pre>
 <h2>Orphaned packages</h2>
-
-Remove orphaned packages with:
-
-<pre><code>viridium clean
-</code></pre>
-
-or:
-
-<pre><code>vbuild -Yc
-</code></pre>
-
+<p>Remove orphaned packages with:</p>
+<pre><code>viridium clean</code></pre>
+<p>or:</p>
+<pre><code>vbuild -Yc</code></pre>
 <h2>Failed services</h2>
-
-List failed systemd services:
-
-<pre><code>systemctl --failed
-</code></pre>
-
-Check a specific service with:
-
-<pre><code>systemctl status service-name
-</code></pre>
-
+<p>List failed systemd services:</p>
+<pre><code>systemctl --failed</code></pre>
+<p>Check a specific service with:</p>
+<pre><code>systemctl status service-name</code></pre>
 <h2>pacman or yay will not run</h2>
-
-This is expected behaviour.
-
-Both commands are locked by default.
-
-Use:
-
-<pre><code>vbuild
-</code></pre>
-
-for normal package management.
-
-If the original tool is actually required:
-
-<pre><code>sudo viridium unlock
-</code></pre>
-
+<p>This is expected behaviour.</p>
+<p>Both commands are locked by default.</p>
+<p>Use:</p>
+<pre><code>vbuild</code></pre>
+<p>for normal package management.</p>
+<p>If the original tool is actually required:</p>
+<pre><code>sudo viridium unlock</code></pre>
 <h2>Package installation problems</h2>
-
-First check the network:
-
-<pre><code>viridium doctor
-</code></pre>
-
-Then retry the package operation.
-
-For example:
-
-<pre><code>vbuild -S package
-</code></pre>
-
-If the issue involves the underlying package tools, they can be temporarily unlocked for further testing.
-
+<p>First check the network:</p>
+<pre><code>viridium doctor</code></pre>
+<p>Then retry the package operation.</p>
+<p>For example:</p>
+<pre><code>vbuild -S package</code></pre>
+<p>If the issue involves the underlying package tools, they can be temporarily unlocked for further testing.</p>
 <h2>Boot problems</h2>
-
-If the system does not boot, see <a href="https://github.ioBoot and UEFI/">Boot and UEFI</a>.
-
-From another Linux environment, EFI boot entries can be checked with:
-
-<pre><code>efibootmgr
-</code></pre>
-
+<p>If the system does not boot, see [[Boot and UEFI]].</p>
+<p>From another Linux environment, EFI boot entries can be checked with:</p>
+<pre><code>efibootmgr</code></pre>
 <h2>Installation problems</h2>
+<p>If installation fails, check:</p>
+<ul>
+<li>Network connectivity</li>
+<li>Selected disk</li>
+<li>EFI System Partition</li>
+<li>Available disk space</li>
+<li>Installer output</li>
+</ul>
+<p>Do not retry a destructive installation without checking which disk is selected first.</p>
 
-If installation fails, check:
+            <div class="footer">
+                Viridium Linux · Documentation
+            </div>
+        </article>
 
-* Network connectivity
-* Selected disk
-* EFI System Partition
-* Available disk space
-* Installer output
+    </main>
 
-Do not retry a destructive installation without checking which disk is selected first.
-</main></body></html>
+</div>
+
+</body>
+</html>

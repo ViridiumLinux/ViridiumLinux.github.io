@@ -1,41 +1,442 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>vbuild</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --accent: #ff8838; --border: #382414; } body { font-family: sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px; position: fixed; height: 100vh; } aside ul { list-style: none; padding: 0; } aside li { margin-bottom: 10px; } aside a { color: #bcada1; text-decoration: none; } .download-btn { display: block; background: #ff8838; color: #141210 !important; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; text-decoration: none; } main { flex: 1; padding: 40px 60px; margin-left: 280px; } h1, h2, h3 { color: var(--accent); } pre { background: #0c0a09; padding: 15px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }</style></head><body><aside><h2>Viridium Wiki</h2><ul><li><a href="https://github.iohome/">Home</a></li><li><a href="https://github.ioinstallation/">Installation</a></li><li><a href="https://github.ioconfiguration/">Configuration</a></li><li><a href="https://github.iovbuild/">vbuild</a></li><li><a href="https://github.ioviridium/">viridium</a></li><li><a href="https://github.ioarchitecture/">Architecture</a></li><li><a href="https://github.ioboot-and-uefi/">Boot and UEFI</a></li><li><a href="https://github.iodevelopment/">Development</a></li><li><a href="https://github.ionetworking/">Networking</a></li><li><a href="https://github.iopackage-management/">Package management</a></li><li><a href="https://github.iotroubleshooting/">Troubleshooting</a></li><li><a href="https://github.iofaq/">FAQ</a></li></ul><a href="https://github.com" class="download-btn">INSTALL VIRIDIUM ISO</a></aside><main><html><head></head><body><h1>vbuild</h1><p><code inline="">vbuild</code> is Viridium's primary package manager.</p><p>It provides a single interface for packages from both the <strong>official Arch repositories and the AUR</strong>.</p><h2>Why vbuild exists</h2><p>Arch Linux separates its official repositories from the AUR.</p><p>A common setup therefore uses:</p><pre><code class="language-text">pacman → official repositories
-yay    → AUR
-</code></pre><p>Viridium combines these into:</p><pre><code class="language-text">vbuild → official repositories + AUR
-</code></pre><p>This is the main reason <code inline="">vbuild</code> exists.</p><p>A package does not need a different command simply because it comes from the AUR.</p><p><code inline="">vbuild</code> is also designed to be faster than the traditional workflow of using <code inline="">pacman</code> and then a separate AUR helper.</p><h2>Command syntax</h2><p><code inline="">vbuild</code> uses command-line options similar to <code inline="">pacman</code>.</p><p>This is intentional.</p><p>Users familiar with Arch should already recognize most of the common operations.</p><h2>Installing packages</h2><p>Install a package with:</p><pre><code class="language-bash">vbuild -S package
-</code></pre><p>For example:</p><pre><code class="language-bash">vbuild -S firefox
-</code></pre><p>The package can come from the official repositories or the AUR.</p><h2>Searching for packages</h2><p>Search for a package with:</p><pre><code class="language-bash">vbuild -Ss search-term
-</code></pre><p>For example:</p><pre><code class="language-bash">vbuild -Ss firefox
-</code></pre><p>This is useful when the exact package name is not known.</p><h2>Updating the system</h2><p>Update the system with:</p><pre><code class="language-bash">vbuild -Syu
-</code></pre><p>This updates installed packages using the configured package sources.</p><h2>Removing packages</h2><p>Remove a package with:</p><pre><code class="language-bash">vbuild -Rns package
-</code></pre><p>This removes the selected package and cleans up dependencies that are no longer required.</p><p>For example:</p><pre><code class="language-bash">vbuild -Rns firefox
-</code></pre><h2>Cleaning orphaned packages</h2><p>Remove orphaned packages with:</p><pre><code class="language-bash">vbuild -Yc
-</code></pre><p>An orphaned package is a package that is no longer required by another installed package.</p><h2>Common commands</h2>
-Command | Description
--- | --
-vbuild -S package | Install a package
-vbuild -Ss term | Search for packages
-vbuild -Syu | Update the system
-vbuild -Rns package | Remove a package
-vbuild -Yc | Remove orphaned packages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<h2>AUR packages</h2><p>AUR packages are handled through the same <code inline="">vbuild</code> interface as packages from the official repositories.</p><p>This is one of the main differences between Viridium's package-management workflow and a normal Arch setup.</p><p>There is normally no need to run an AUR helper separately.</p><h2>pacman and yay</h2><p><code inline="">pacman</code> and <code inline="">yay</code> are locked by default in Viridium.</p><p>This prevents package management from being split between several different tools.</p><p>Normal package operations should go through:</p><pre><code class="language-bash">vbuild
-</code></pre><p>If <code inline="">pacman</code> or <code inline="">yay</code> is run directly, Viridium can detect the command and provide the corresponding <code inline="">vbuild</code> command.</p><h2>Unlocking the original tools</h2><p>There are cases where the original tools are required.</p><p>For example, a development script may expect normal <code inline="">pacman</code> behaviour.</p><p>They can be temporarily unlocked with:</p><pre><code class="language-bash">sudo viridium unlock
-</code></pre><p>A custom unlock period can be specified:</p><pre><code class="language-bash">sudo viridium unlock 30
-</code></pre><p>The number is the unlock duration in minutes.</p><p>To lock the tools again manually:</p><pre><code class="language-bash">sudo viridium lock
-</code></pre><p>The tools automatically lock again when the unlock period expires.</p><h2>vbuild vs pacman + AUR helper</h2><p>The intended package-management layout is:</p><pre><code class="language-text">Traditional Arch:
+    <title>vbuild — Viridium Linux</title>
 
-pacman
-  │
-  └── official repositories
+    <style>
 
-yay
-  │
-  └── AUR
+:root {
+    --background: #141210;
+    --sidebar: #1f1a16;
+    --sidebar-hover: #2a211b;
+    --border: #382414;
+    --accent: #ff8838;
+    --accent-hover: #ff9d59;
+    --text: #e9e2dc;
+    --muted: #a79c93;
+    --code: #191512;
+    --table-alt: #191512;
+    --blockquote: #201913;
+}
 
+* {
+    box-sizing: border-box;
+}
 
-Viridium:
+html {
+    scroll-behavior: smooth;
+}
 
-vbuild
-  ├── official repositories
-  └── AUR
-</code></pre><p>The unified setup is the main purpose of <code inline="">vbuild</code>, while the faster workflow is an additional part of its design.</p></body></html></main></body></html>
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    line-height: 1.7;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------------------------
+   Sidebar
+   ------------------------------------------------------------ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    overflow-y: auto;
+
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+
+    padding: 28px 20px;
+}
+
+.logo {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo-title {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.nav-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px 4px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.nav a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 6px;
+    color: #cfc6bf;
+    font-size: 14px;
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.nav a:hover {
+    background: var(--sidebar-hover);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav a.active {
+    background: #2b211a;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.install-button {
+    display: block;
+    margin-top: 25px;
+    padding: 11px 14px;
+
+    background: var(--accent);
+    color: #17110d;
+
+    border-radius: 6px;
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition:
+        background 0.12s ease,
+        transform 0.12s ease;
+}
+
+.install-button:hover {
+    background: var(--accent-hover);
+    color: #17110d;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Content
+   ------------------------------------------------------------ */
+
+.content {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    padding: 55px 65px 80px;
+}
+
+.article {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f4eee9;
+    line-height: 1.25;
+    margin-top: 1.7em;
+    margin-bottom: 0.65em;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 27px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+p {
+    margin: 0 0 16px;
+}
+
+strong {
+    color: #fff5ed;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 35px 0;
+}
+
+/* ------------------------------------------------------------
+   Code
+   ------------------------------------------------------------ */
+
+code {
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+
+    color: #f0d6c3;
+    font-family:
+        "JetBrains Mono",
+        "Cascadia Code",
+        "Fira Code",
+        Consolas,
+        monospace;
+
+    font-size: 0.9em;
+}
+
+pre {
+    margin: 22px 0;
+    padding: 18px;
+
+    overflow-x: auto;
+
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    line-height: 1.55;
+}
+
+pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: #ddd3cb;
+    font-size: 13px;
+}
+
+/* ------------------------------------------------------------
+   Tables
+   ------------------------------------------------------------ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 22px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    border: 1px solid var(--border);
+    background: var(--background);
+}
+
+th,
+td {
+    padding: 10px 13px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: #211a15;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: var(--table-alt);
+}
+
+/* ------------------------------------------------------------
+   Lists
+   ------------------------------------------------------------ */
+
+ul,
+ol {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    padding-left: 28px;
+}
+
+li {
+    margin: 4px 0;
+}
+
+/* ------------------------------------------------------------
+   Blockquotes
+   ------------------------------------------------------------ */
+
+blockquote {
+    margin: 20px 0;
+    padding: 10px 18px;
+
+    background: var(--blockquote);
+    border-left: 3px solid var(--accent);
+
+    color: #c5bbb3;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.footer {
+    margin-top: 70px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 800px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+        padding: 35px 22px 60px;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install-button {
+        margin-bottom: 5px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-title">Viridium Linux</div>
+            <div class="logo-subtitle">Documentation</div>
+        </div>
+
+        <div class="nav-title">Documentation</div>
+
+        <nav class="nav">
+            <a href="https://github.io/">Home</a>
+<a href="https://github.io/installation/">Installation</a>
+<a href="https://github.io/configuration/">Configuration</a>
+<a href="https://github.io/vbuild/" class="active">vbuild</a>
+<a href="https://github.io/viridium/">viridium</a>
+<a href="https://github.io/architecture/">Architecture</a>
+<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
+<a href="https://github.io/development/">Development</a>
+<a href="https://github.io/networking/">Networking</a>
+<a href="https://github.io/package-management/">Package management</a>
+<a href="https://github.io/troubleshooting/">Troubleshooting</a>
+<a href="https://github.io/faq/">FAQ</a>
+        </nav>
+
+        <a
+            class="install-button"
+            href="https://github.com"
+        >
+            Install Viridium Linux
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <article class="article">
+            <p>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;vbuild&lt;/h1&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; is Viridium's primary package manager.&lt;/p&gt;&lt;p&gt;It provides a single interface for packages from both the &lt;strong&gt;official Arch repositories and the AUR&lt;/strong&gt;.&lt;/p&gt;&lt;h2&gt;Why vbuild exists&lt;/h2&gt;&lt;p&gt;Arch Linux separates its official repositories from the AUR.&lt;/p&gt;&lt;p&gt;A common setup therefore uses:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;pacman → official repositories yay    → AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Viridium combines these into:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;vbuild → official repositories + AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is the main reason &lt;code inline=""&gt;vbuild&lt;/code&gt; exists.&lt;/p&gt;&lt;p&gt;A package does not need a different command simply because it comes from the AUR.&lt;/p&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; is also designed to be faster than the traditional workflow of using &lt;code inline=""&gt;pacman&lt;/code&gt; and then a separate AUR helper.&lt;/p&gt;&lt;h2&gt;Command syntax&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; uses command-line options similar to &lt;code inline=""&gt;pacman&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;This is intentional.&lt;/p&gt;&lt;p&gt;Users familiar with Arch should already recognize most of the common operations.&lt;/p&gt;&lt;h2&gt;Installing packages&lt;/h2&gt;&lt;p&gt;Install a package with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -S package &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -S firefox &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The package can come from the official repositories or the AUR.&lt;/p&gt;&lt;h2&gt;Searching for packages&lt;/h2&gt;&lt;p&gt;Search for a package with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Ss search-term &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Ss firefox &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is useful when the exact package name is not known.&lt;/p&gt;&lt;h2&gt;Updating the system&lt;/h2&gt;&lt;p&gt;Update the system with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Syu &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This updates installed packages using the configured package sources.&lt;/p&gt;&lt;h2&gt;Removing packages&lt;/h2&gt;&lt;p&gt;Remove a package with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Rns package &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This removes the selected package and cleans up dependencies that are no longer required.&lt;/p&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Rns firefox &lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;Cleaning orphaned packages&lt;/h2&gt;&lt;p&gt;Remove orphaned packages with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild -Yc &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;An orphaned package is a package that is no longer required by another installed package.&lt;/p&gt;&lt;h2&gt;Common commands&lt;/h2&gt; Command | Description -- | -- vbuild -S package | Install a package vbuild -Ss term | Search for packages vbuild -Syu | Update the system vbuild -Rns package | Remove a package vbuild -Yc | Remove orphaned packages</p>
+<p>&lt;h2&gt;AUR packages&lt;/h2&gt;&lt;p&gt;AUR packages are handled through the same &lt;code inline=""&gt;vbuild&lt;/code&gt; interface as packages from the official repositories.&lt;/p&gt;&lt;p&gt;This is one of the main differences between Viridium's package-management workflow and a normal Arch setup.&lt;/p&gt;&lt;p&gt;There is normally no need to run an AUR helper separately.&lt;/p&gt;&lt;h2&gt;pacman and yay&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;pacman&lt;/code&gt; and &lt;code inline=""&gt;yay&lt;/code&gt; are locked by default in Viridium.&lt;/p&gt;&lt;p&gt;This prevents package management from being split between several different tools.&lt;/p&gt;&lt;p&gt;Normal package operations should go through:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;vbuild &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If &lt;code inline=""&gt;pacman&lt;/code&gt; or &lt;code inline=""&gt;yay&lt;/code&gt; is run directly, Viridium can detect the command and provide the corresponding &lt;code inline=""&gt;vbuild&lt;/code&gt; command.&lt;/p&gt;&lt;h2&gt;Unlocking the original tools&lt;/h2&gt;&lt;p&gt;There are cases where the original tools are required.&lt;/p&gt;&lt;p&gt;For example, a development script may expect normal &lt;code inline=""&gt;pacman&lt;/code&gt; behaviour.&lt;/p&gt;&lt;p&gt;They can be temporarily unlocked with:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;sudo viridium unlock &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A custom unlock period can be specified:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;sudo viridium unlock 30 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The number is the unlock duration in minutes.&lt;/p&gt;&lt;p&gt;To lock the tools again manually:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;sudo viridium lock &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The tools automatically lock again when the unlock period expires.&lt;/p&gt;&lt;h2&gt;vbuild vs pacman + AUR helper&lt;/h2&gt;&lt;p&gt;The intended package-management layout is:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;Traditional Arch:</p>
+<p>pacman │ └── official repositories</p>
+<p>yay │ └── AUR</p>
+<p>Viridium:</p>
+<p>vbuild ├── official repositories └── AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The unified setup is the main purpose of &lt;code inline=""&gt;vbuild&lt;/code&gt;, while the faster workflow is an additional part of its design.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</p>
+
+            <div class="footer">
+                Viridium Linux · Documentation
+            </div>
+        </article>
+
+    </main>
+
+</div>
+
+</body>
+</html>

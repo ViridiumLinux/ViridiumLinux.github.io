@@ -1,66 +1,466 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Configuration</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --accent: #ff8838; --border: #382414; } body { font-family: sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px; position: fixed; height: 100vh; } aside ul { list-style: none; padding: 0; } aside li { margin-bottom: 10px; } aside a { color: #bcada1; text-decoration: none; } .download-btn { display: block; background: #ff8838; color: #141210 !important; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; text-decoration: none; } main { flex: 1; padding: 40px 60px; margin-left: 280px; } h1, h2, h3 { color: var(--accent); } pre { background: #0c0a09; padding: 15px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }</style></head><body><aside><h2>Viridium Wiki</h2><ul><li><a href="https://github.iohome/">Home</a></li><li><a href="https://github.ioinstallation/">Installation</a></li><li><a href="https://github.ioconfiguration/">Configuration</a></li><li><a href="https://github.iovbuild/">vbuild</a></li><li><a href="https://github.ioviridium/">viridium</a></li><li><a href="https://github.ioarchitecture/">Architecture</a></li><li><a href="https://github.ioboot-and-uefi/">Boot and UEFI</a></li><li><a href="https://github.iodevelopment/">Development</a></li><li><a href="https://github.ionetworking/">Networking</a></li><li><a href="https://github.iopackage-management/">Package management</a></li><li><a href="https://github.iotroubleshooting/">Troubleshooting</a></li><li><a href="https://github.iofaq/">FAQ</a></li></ul><a href="https://github.com" class="download-btn">INSTALL VIRIDIUM ISO</a></aside><main><h1>Configuration</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-Viridium uses the standard Linux configuration tools and system components wherever possible.
+    <title>Configuration — Viridium Linux</title>
 
+    <style>
+
+:root {
+    --background: #141210;
+    --sidebar: #1f1a16;
+    --sidebar-hover: #2a211b;
+    --border: #382414;
+    --accent: #ff8838;
+    --accent-hover: #ff9d59;
+    --text: #e9e2dc;
+    --muted: #a79c93;
+    --code: #191512;
+    --table-alt: #191512;
+    --blockquote: #201913;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    line-height: 1.7;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------------------------
+   Sidebar
+   ------------------------------------------------------------ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100vh;
+    overflow-y: auto;
+
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+
+    padding: 28px 20px;
+}
+
+.logo {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo-title {
+    color: var(--accent);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.nav-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px 4px;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.nav a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 6px;
+    color: #cfc6bf;
+    font-size: 14px;
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.nav a:hover {
+    background: var(--sidebar-hover);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav a.active {
+    background: #2b211a;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.install-button {
+    display: block;
+    margin-top: 25px;
+    padding: 11px 14px;
+
+    background: var(--accent);
+    color: #17110d;
+
+    border-radius: 6px;
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    transition:
+        background 0.12s ease,
+        transform 0.12s ease;
+}
+
+.install-button:hover {
+    background: var(--accent-hover);
+    color: #17110d;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Content
+   ------------------------------------------------------------ */
+
+.content {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    padding: 55px 65px 80px;
+}
+
+.article {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f4eee9;
+    line-height: 1.25;
+    margin-top: 1.7em;
+    margin-bottom: 0.65em;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 36px;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 27px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+p {
+    margin: 0 0 16px;
+}
+
+strong {
+    color: #fff5ed;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 35px 0;
+}
+
+/* ------------------------------------------------------------
+   Code
+   ------------------------------------------------------------ */
+
+code {
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+
+    color: #f0d6c3;
+    font-family:
+        "JetBrains Mono",
+        "Cascadia Code",
+        "Fira Code",
+        Consolas,
+        monospace;
+
+    font-size: 0.9em;
+}
+
+pre {
+    margin: 22px 0;
+    padding: 18px;
+
+    overflow-x: auto;
+
+    background: var(--code);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    line-height: 1.55;
+}
+
+pre code {
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: #ddd3cb;
+    font-size: 13px;
+}
+
+/* ------------------------------------------------------------
+   Tables
+   ------------------------------------------------------------ */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 22px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    border: 1px solid var(--border);
+    background: var(--background);
+}
+
+th,
+td {
+    padding: 10px 13px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    background: #211a15;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: var(--table-alt);
+}
+
+/* ------------------------------------------------------------
+   Lists
+   ------------------------------------------------------------ */
+
+ul,
+ol {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    padding-left: 28px;
+}
+
+li {
+    margin: 4px 0;
+}
+
+/* ------------------------------------------------------------
+   Blockquotes
+   ------------------------------------------------------------ */
+
+blockquote {
+    margin: 20px 0;
+    padding: 10px 18px;
+
+    background: var(--blockquote);
+    border-left: 3px solid var(--accent);
+
+    color: #c5bbb3;
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+
+.footer {
+    margin-top: 70px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Mobile
+   ------------------------------------------------------------ */
+
+@media (max-width: 800px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+        padding: 35px 22px 60px;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .install-button {
+        margin-bottom: 5px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-title">Viridium Linux</div>
+            <div class="logo-subtitle">Documentation</div>
+        </div>
+
+        <div class="nav-title">Documentation</div>
+
+        <nav class="nav">
+            <a href="https://github.io/">Home</a>
+<a href="https://github.io/installation/">Installation</a>
+<a href="https://github.io/configuration/" class="active">Configuration</a>
+<a href="https://github.io/vbuild/">vbuild</a>
+<a href="https://github.io/viridium/">viridium</a>
+<a href="https://github.io/architecture/">Architecture</a>
+<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
+<a href="https://github.io/development/">Development</a>
+<a href="https://github.io/networking/">Networking</a>
+<a href="https://github.io/package-management/">Package management</a>
+<a href="https://github.io/troubleshooting/">Troubleshooting</a>
+<a href="https://github.io/faq/">FAQ</a>
+        </nav>
+
+        <a
+            class="install-button"
+            href="https://github.com"
+        >
+            Install Viridium Linux
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <article class="article">
+            <h1>Configuration</h1>
+<p>Viridium uses the standard Linux configuration tools and system components wherever possible.</p>
 <h2>Hostname</h2>
-
-The hostname can be viewed with:
-
-<pre><code>hostnamectl
-</code></pre>
-
-The hostname is normally configured during installation.
-
+<p>The hostname can be viewed with:</p>
+<pre><code>hostnamectl</code></pre>
+<p>The hostname is normally configured during installation.</p>
 <h2>Timezone</h2>
-
-The current timezone can be checked with:
-
-<pre><code>timedatectl
-</code></pre>
-
-The timezone is selected during installation.
-
+<p>The current timezone can be checked with:</p>
+<pre><code>timedatectl</code></pre>
+<p>The timezone is selected during installation.</p>
 <h2>Users</h2>
-
-The initial user is created by <code>vinstall</code>.
-
-The account is configured for <code>sudo</code>.
-
-Normal Linux user-management tools can be used after installation.
-
+<p>The initial user is created by <code>vinstall</code>.</p>
+<p>The account is configured for <code>sudo</code>.</p>
+<p>Normal Linux user-management tools can be used after installation.</p>
 <h2>Services</h2>
-
-Viridium uses systemd for service management.
-
-Check a service with:
-
-<pre><code>systemctl status service-name
-</code></pre>
-
-List failed services:
-
-<pre><code>systemctl --failed
-</code></pre>
-
-List enabled services:
-
-<pre><code>systemctl list-unit-files --state=enabled
-</code></pre>
-
+<p>Viridium uses systemd for service management.</p>
+<p>Check a service with:</p>
+<pre><code>systemctl status service-name</code></pre>
+<p>List failed services:</p>
+<pre><code>systemctl --failed</code></pre>
+<p>List enabled services:</p>
+<pre><code>systemctl list-unit-files --state=enabled</code></pre>
 <h2>Network configuration</h2>
-
-Network configuration is handled by NetworkManager.
-
-See <a href="https://github.ioNetworking/">Networking</a>.
-
+<p>Network configuration is handled by NetworkManager.</p>
+<p>See [[Networking]].</p>
 <h2>Package configuration</h2>
+<p>Packages should normally be installed and removed through:</p>
+<pre><code>vbuild</code></pre>
+<p>Direct <code>pacman</code> and <code>yay</code> access is locked by default.</p>
+<p>See [[Package Management]].</p>
 
-Packages should normally be installed and removed through:
+            <div class="footer">
+                Viridium Linux · Documentation
+            </div>
+        </article>
 
-<pre><code>vbuild
-</code></pre>
+    </main>
 
-Direct <code>pacman</code> and <code>yay</code> access is locked by default.
+</div>
 
-See <a href="https://github.ioPackage Management/">Package Management</a>.
-</main></body></html>
+</body>
+</html>
