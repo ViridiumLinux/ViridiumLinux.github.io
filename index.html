@@ -1,1 +1,728 @@
-<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=home.html"></head></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Viridium Linux Wiki</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --text-muted: #bcada1; --accent: #ff8838; --accent-light: #ffd4b8; --border: #382414; } body { font-family: system-ui, sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; line-height: 1.6; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px 20px; position: fixed; height: 100vh; display: flex; flex-direction: column; box-sizing: border-box; } .sidebar-content { flex: 1; overflow-y: auto; } aside h2 { font-size: 1.15rem; margin-top: 0; display: flex; align-items: center; gap: 8px; color: var(--accent-light); font-weight: 600; text-transform: uppercase; } aside ul { list-style: none; padding: 0; margin: 0; } aside li { margin-bottom: 8px; } aside a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; display: block; padding: 6px 10px; border-radius: 6px; cursor: pointer; } aside a:hover, aside a.active-link { color: var(--accent); background: rgba(255, 136, 56, 0.08); font-weight: bold; } .download-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #ff8838 0%, #d45d00 100%); color: #141210 !important; font-weight: bold; text-decoration: none; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 0.95rem; text-align: center; } main { flex: 1; padding: 40px 60px; margin-left: 280px; max-width: 850px; } h1 { color: var(--accent); font-size: 2.2rem; margin-top: 0; background: linear-gradient(135deg, #ff8838 0%, #ffd4b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } h2 { color: var(--accent); font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 40px; } code { background: rgba(255, 136, 56, 0.1); color: var(--accent-light); padding: 3px 6px; border-radius: 4px; font-family: monospace; border: 1px solid rgba(255, 136, 56, 0.2); } pre { background: #0c0a09; padding: 18px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; margin: 20px 0; } pre code { color: var(--text-main); background: none; padding: 0; } .diagram-block { background: #0c0a09; color: var(--text-main); font-family: monospace; line-height: 1.4; border: 1px solid var(--border); padding: 15px; border-radius: 8px; white-space: pre; overflow-x: auto; margin: 20px 0; } .diagram-block a { border-bottom: none; } main a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); } main a:hover { border-bottom-style: solid; } p { margin: 16px 0; color: #e4ded5; } .table-container { overflow-x: auto; margin: 25px 0; border: 1px solid var(--border); border-radius: 8px; } table { width: 100%; border-collapse: collapse; background: var(--bg-sidebar); } th { background: #1a1512; color: var(--accent); padding: 12px 16px; border-bottom: 2px solid var(--border); text-align: left; } td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #e4ded5; text-align: left; }</style></head><body><aside><div class="sidebar-content"><h2>Viridium Wiki</h2><ul><li><a href="#home" id="link-home" onclick="showPage('home')">Home</a></li>
+<li><a href="#installation" id="link-installation" onclick="showPage('installation')">Installation</a></li>
+<li><a href="#configuration" id="link-configuration" onclick="showPage('configuration')">Configuration</a></li>
+<li><a href="#vbuild" id="link-vbuild" onclick="showPage('vbuild')">vbuild</a></li>
+<li><a href="#viridium" id="link-viridium" onclick="showPage('viridium')">viridium</a></li>
+<li><a href="#architecture" id="link-architecture" onclick="showPage('architecture')">Architecture</a></li>
+<li><a href="#boot-and-uefi" id="link-boot-and-uefi" onclick="showPage('boot-and-uefi')">Boot and UEFI</a></li>
+<li><a href="#development" id="link-development" onclick="showPage('development')">Development</a></li>
+<li><a href="#networking" id="link-networking" onclick="showPage('networking')">Networking</a></li>
+<li><a href="#package-management" id="link-package-management" onclick="showPage('package-management')">Package management</a></li>
+<li><a href="#troubleshooting" id="link-troubleshooting" onclick="showPage('troubleshooting')">Troubleshooting</a></li>
+<li><a href="#faq" id="link-faq" onclick="showPage('faq')">FAQ</a></li>
+</ul></div><a href="https://github.com" class="download-btn">INSTALL VIRIDIUM ISO</a></aside><main><div id="page-home" class="wiki-page-content" style="display:none;"><html><head></head><body><h1>Viridium Linux</h1><p>Viridium Linux is a minimal, Arch-based Linux distribution.</p><p>It uses the Arch Linux package ecosystem, including the official repositories and the AUR, while providing its own installer and system-management tools.</p><p>Viridium is designed to keep the parts of Arch that are useful and familiar while making a few parts of the system simpler to use.
+<h2>vbuild</h2><p><code inline="">vbuild</code> is the main package manager in Viridium.</p><p>Its primary purpose is combining the <strong>official Arch repositories and the AUR</strong> into one package-management interface.</p><p>On a normal Arch installation, package management commonly looks like:</p><pre><code class="language-text">pacman → official repositories
+yay    → AUR
+</code></pre><p>Viridium instead uses:</p><pre><code class="language-text">vbuild → official repositories + AUR
+</code></pre><p>This means you don't have to switch between two different programs depending on where a package comes from.</p><p><code inline="">vbuild</code> is also designed around a faster workflow than the traditional <code inline="">pacman</code> + AUR helper setup.</p><p>Its command syntax is intentionally similar to <code inline="">pacman</code>, so existing Arch users don't have to learn an entirely different command structure.</p><h2>vinstall</h2><p><code inline="">vinstall</code> is the Viridium installer.</p><p>It handles the initial system setup, including:</p><ul><li><p>Disk configuration</p></li><li><p>Filesystems</p></li><li><p>Kernel selection</p></li><li><p>Hostname</p></li><li><p>Timezone</p></li><li><p>User creation</p></li><li><p>Base package installation</p></li><li><p>EFI configuration</p></li><li><p>Bootloader installation</p></li></ul><p>It can either wipe an entire disk or install using existing partitions.</p><h2>viridium</h2><p><code inline="">viridium</code> is the general system-management command.</p><p>It provides commands for things such as:</p><pre><code class="language-bash">viridium update
+viridium clean
+viridium info
+viridium doctor
+</code></pre><p>It also manages the temporary unlocking of <code inline="">pacman</code> and <code inline="">yay</code>.</p><h2>Package management</h2><p>Normal package management should be done through <code inline="">vbuild</code>.</p><p>For example:</p><pre><code class="language-bash">vbuild -S firefox
+</code></pre><p>Update the system with:</p><pre><code class="language-bash">vbuild -Syu
+</code></pre><p>Search for a package with:</p><pre><code class="language-bash">vbuild -Ss firefox
+</code></pre><p>See <a href="#vbuild" onclick="showPage('vbuild')">vbuild</a> for the full command reference.</p><h2>Installation</h2><p>Boot the Viridium live environment and run:</p><pre><code class="language-bash">vinstall
+</code></pre><p>See <a href="#installation" onclick="showPage('installation')">Installation</a> for the complete installation procedure.</p><h2>Getting help</h2><p>For system diagnostics:</p><pre><code class="language-bash">viridium doctor
+</code></pre><p>For command help:</p><pre><code class="language-bash">viridium help
+</code></pre><p>The <a href="#troubleshooting" onclick="showPage('troubleshooting')">Troubleshooting</a> page covers common problems and their solutions.</p><h2>Wiki pages</h2><h3>Installation</h3><ul><li><p><a href="#installation" onclick="showPage('installation')">Installation</a></p></li><li><p><a href="#boot-and-uefi" onclick="showPage('boot-and-uefi')">Boot and UEFI</a></p></li></ul><h3>Package management</h3><ul><li><p><a href="#vbuild" onclick="showPage('vbuild')">vbuild</a></p></li><li><p><a href="#package-management" onclick="showPage('package-management')">Package Management</a></p></li></ul><h3>System management</h3><ul><li><p><a href="#viridium" onclick="showPage('viridium')">viridium</a></p></li><li><p><a href="#networking" onclick="showPage('networking')">Networking</a></p></li><li><p><a href="#configuration" onclick="showPage('configuration')">Configuration</a></p></li></ul><h3>Troubleshooting</h3><ul><li><p><a href="#troubleshooting" onclick="showPage('troubleshooting')">Troubleshooting</a></p></li><li><p><a href="#faq" onclick="showPage('faq')">FAQ</a></p></li></ul><h3>Development</h3><ul><li><p><a href="#architecture" onclick="showPage('architecture')">Architecture</a></p></li><li><p><a href="#development" onclick="showPage('development')">Development</a></p></li></ul></body></html></div>
+<div id="page-installation" class="wiki-page-content" style="display:none;"><h1>Installation</h1>
+<p>Viridium is installed using <code>vinstall</code> from the live environment.</p>
+<h2>Requirements</h2>
+<p>Before starting the installation, make sure the system has:</p>
+<li>UEFI firmware</li>
+<li>A working internet connection</li>
+<li>A disk or existing partition to install to</li>
+<p>The installer downloads packages during installation, so an internet connection is required.</p>
+<h2>Starting the installer</h2>
+<p>Boot the Viridium live environment and run:</p>
+<pre><code>vinstall
+</code></pre>
+<p>The installer will guide you through the required configuration.</p>
+<h2>Installation steps</h2>
+<p>The installer asks for several pieces of information before installing the system.</p>
+<h3>Kernel</h3>
+<p>Select the kernel to install.</p>
+<p>The selected kernel is installed into the new system and used for normal booting.</p>
+<h3>Hostname</h3>
+<p>Enter the hostname for the new system.</p>
+<p>This becomes the system hostname after installation.</p>
+<h3>Timezone</h3>
+<p>Select the timezone to use.</p>
+<p>The selected timezone is configured in the installed system.</p>
+<h3>Username</h3>
+<p>Enter the username for the initial user account.</p>
+<p>The account is created during installation and configured for <code>sudo</code>.</p>
+<h2>Disk configuration</h2>
+<p>Viridium supports two main disk configuration modes.</p>
+<h3>Wipe the entire disk</h3>
+<p>The installer creates the required partition layout and uses the selected disk for Viridium.</p>
+<p>Use this mode when Viridium is going to be the only operating system on the disk.</p>
+<p>**This is destructive.**</p>
+<p>The installer requires a typed confirmation before performing destructive operations.</p>
+<p>Double-check the selected disk before confirming.</p>
+<h3>Use existing partitions</h3>
+<p>Existing partitions can be selected instead of wiping the disk.</p>
+<p>The installation requires:</p>
+<li>A root filesystem partition</li>
+<li>An EFI System Partition</li>
+<p>This mode is useful for dual-boot installations or systems where the disk has already been partitioned.</p>
+<h2>Dual boot</h2>
+<p>Viridium can use an existing EFI System Partition.</p>
+<p>For example, a system might already contain:</p>
+<pre><code>EFI System Partition
+├── Microsoft
+└── existing Linux boot files
+</code></pre>
+<p>Viridium can install its boot files into the same EFI System Partition.</p>
+<p>Existing boot entries are not removed by the installer. A Windows installation can therefore remain alongside Viridium.</p>
+<h2>EFI System Partition</h2>
+<p>The EFI System Partition must be mounted during installation.</p>
+<p>The installer handles the required EFI configuration.</p>
+<p>See <a href="#boot-and-uefi" onclick="showPage('boot-and-uefi')">Boot and UEFI</a> for more information about Viridium's boot setup.</p>
+<h2>Filesystems</h2>
+<p>The root partition selected during installation is used as the filesystem for the installed system.</p>
+<p>The installer handles mounting the selected partitions while the installation is running.</p>
+<h2>Network</h2>
+<p>The installer requires network access because packages are downloaded during the installation.</p>
+<p>NetworkManager is used for network configuration.</p>
+<p>If the live environment does not have a working connection, use:</p>
+<pre><code>nmtui
+</code></pre>
+<p>to configure Wi-Fi.</p>
+<h2>Installation completion</h2>
+<p>After all packages and configuration have been installed, the installer finishes and the system can be rebooted.</p>
+<p>Remove the installation media before booting the new installation.</p>
+<h2>First boot</h2>
+<p>The installed system boots through systemd-boot on UEFI systems.</p>
+<p>Log in using the user created during installation.</p>
+<p>On the first login, Viridium displays a one-time message explaining the package-management setup.</p>
+<p>The message explains the relationship between:</p>
+<li><code>vbuild</code></li>
+<li><code>pacman</code></li>
+<li><code>yay</code></li>
+<p>It is only shown once.</p>
+<h2>After installation</h2>
+<p>A good first check is:</p>
+<pre><code>viridium info
+</code></pre>
+<p>Then check the system:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>To update the newly installed system:</p>
+<pre><code>viridium update
+</code></pre>
+<p>See <a href="#vbuild" onclick="showPage('vbuild')">vbuild</a> for package-management commands.</p></div>
+<div id="page-configuration" class="wiki-page-content" style="display:none;"><h1>Configuration</h1>
+<p>Viridium uses the standard Linux configuration tools and system components wherever possible.</p>
+<h2>Hostname</h2>
+<p>The hostname can be viewed with:</p>
+<pre><code>hostnamectl
+</code></pre>
+<p>The hostname is normally configured during installation.</p>
+<h2>Timezone</h2>
+<p>The current timezone can be checked with:</p>
+<pre><code>timedatectl
+</code></pre>
+<p>The timezone is selected during installation.</p>
+<h2>Users</h2>
+<p>The initial user is created by <code>vinstall</code>.</p>
+<p>The account is configured for <code>sudo</code>.</p>
+<p>Normal Linux user-management tools can be used after installation.</p>
+<h2>Services</h2>
+<p>Viridium uses systemd for service management.</p>
+<p>Check a service with:</p>
+<pre><code>systemctl status service-name
+</code></pre>
+<p>List failed services:</p>
+<pre><code>systemctl --failed
+</code></pre>
+<p>List enabled services:</p>
+<pre><code>systemctl list-unit-files --state=enabled
+</code></pre>
+<h2>Network configuration</h2>
+<p>Network configuration is handled by NetworkManager.</p>
+<p>See <a href="#networking" onclick="showPage('networking')">Networking</a>.</p>
+<h2>Package configuration</h2>
+<p>Packages should normally be installed and removed through:</p>
+<pre><code>vbuild
+</code></pre>
+<p>Direct <code>pacman</code> and <code>yay</code> access is locked by default.</p>
+<p>See <a href="#package-management" onclick="showPage('package-management')">Package Management</a>.</p></div>
+<div id="page-vbuild" class="wiki-page-content" style="display:none;"><html><head></head><body><h1>vbuild</h1><p><code inline="">vbuild</code> is Viridium's primary package manager.</p><p>It provides a single interface for packages from both the <strong>official Arch repositories and the AUR</strong>.</p><h2>Why vbuild exists</h2><p>Arch Linux separates its official repositories from the AUR.</p><p>A common setup therefore uses:</p><pre><code class="language-text">pacman → official repositories
+yay    → AUR
+</code></pre><p>Viridium combines these into:</p><pre><code class="language-text">vbuild → official repositories + AUR
+</code></pre><p>This is the main reason <code inline="">vbuild</code> exists.</p><p>A package does not need a different command simply because it comes from the AUR.</p><p><code inline="">vbuild</code> is also designed to be faster than the traditional workflow of using <code inline="">pacman</code> and then a separate AUR helper.</p><h2>Command syntax</h2><p><code inline="">vbuild</code> uses command-line options similar to <code inline="">pacman</code>.</p><p>This is intentional.</p><p>Users familiar with Arch should already recognize most of the common operations.</p><h2>Installing packages</h2><p>Install a package with:</p><pre><code class="language-bash">vbuild -S package
+</code></pre><p>For example:</p><pre><code class="language-bash">vbuild -S firefox
+</code></pre><p>The package can come from the official repositories or the AUR.</p><h2>Searching for packages</h2><p>Search for a package with:</p><pre><code class="language-bash">vbuild -Ss search-term
+</code></pre><p>For example:</p><pre><code class="language-bash">vbuild -Ss firefox
+</code></pre><p>This is useful when the exact package name is not known.</p><h2>Updating the system</h2><p>Update the system with:</p><pre><code class="language-bash">vbuild -Syu
+</code></pre><p>This updates installed packages using the configured package sources.</p><h2>Removing packages</h2><p>Remove a package with:</p><pre><code class="language-bash">vbuild -Rns package
+</code></pre><p>This removes the selected package and cleans up dependencies that are no longer required.</p><p>For example:</p><pre><code class="language-bash">vbuild -Rns firefox
+</code></pre><h2>Cleaning orphaned packages</h2><p>Remove orphaned packages with:</p><pre><code class="language-bash">vbuild -Yc
+</code></pre><p>An orphaned package is a package that is no longer required by another installed package.</p><h2>Common commands</h2>
+Command | Description
+-- | --
+vbuild -S package | Install a package
+vbuild -Ss term | Search for packages
+vbuild -Syu | Update the system
+vbuild -Rns package | Remove a package
+vbuild -Yc | Remove orphaned packages
+<h2>AUR packages</h2><p>AUR packages are handled through the same <code inline="">vbuild</code> interface as packages from the official repositories.</p><p>This is one of the main differences between Viridium's package-management workflow and a normal Arch setup.</p><p>There is normally no need to run an AUR helper separately.</p><h2>pacman and yay</h2><p><code inline="">pacman</code> and <code inline="">yay</code> are locked by default in Viridium.</p><p>This prevents package management from being split between several different tools.</p><p>Normal package operations should go through:</p><pre><code class="language-bash">vbuild
+</code></pre><p>If <code inline="">pacman</code> or <code inline="">yay</code> is run directly, Viridium can detect the command and provide the corresponding <code inline="">vbuild</code> command.</p><h2>Unlocking the original tools</h2><p>There are cases where the original tools are required.</p><p>For example, a development script may expect normal <code inline="">pacman</code> behaviour.</p><p>They can be temporarily unlocked with:</p><pre><code class="language-bash">sudo viridium unlock
+</code></pre><p>A custom unlock period can be specified:</p><pre><code class="language-bash">sudo viridium unlock 30
+</code></pre><p>The number is the unlock duration in minutes.</p><p>To lock the tools again manually:</p><pre><code class="language-bash">sudo viridium lock
+</code></pre><p>The tools automatically lock again when the unlock period expires.</p><h2>vbuild vs pacman + AUR helper</h2><p>The intended package-management layout is:</p><pre><code class="language-text">Traditional Arch:
+<p>pacman<br>  │<br>  └── official repositories</p>
+<p>yay<br>  │<br>  └── AUR</p>
+<p>Viridium:</p>
+<p>vbuild<br>  ├── official repositories<br>  └── AUR<br></code></pre><p>The unified setup is the main purpose of <code inline="">vbuild</code>, while the faster workflow is an additional part of its design.</p></body></html></p></div>
+<div id="page-viridium" class="wiki-page-content" style="display:none;"><html><head></head><body><h1>viridium</h1><p><code inline="">viridium</code> is Viridium's general system-management utility.</p><p>While <code inline="">vbuild</code> is responsible for package management, <code inline="">viridium</code> handles system-level tasks that don't belong directly in the package manager.</p><p>It provides shortcuts for common maintenance tasks, system information, diagnostics, and control over Viridium's package-management restrictions.</p><h2>Usage</h2><p>The general syntax is:</p><pre><code class="language-bash">viridium &lt;command&gt;
+</code></pre><p>Run:</p><pre><code class="language-bash">viridium help
+</code></pre><p>to display the available commands.</p><h2>Commands</h2><h3>update</h3><pre><code class="language-bash">viridium update
+</code></pre><p>Updates the system using <code inline="">vbuild</code>.</p><p>This is a shortcut for:</p><pre><code class="language-bash">vbuild -Syu
+</code></pre><p>Using <code inline="">viridium update</code> is intended for users who want a simple system-update command without having to remember the underlying <code inline="">vbuild</code> options.</p><h3>clean</h3><pre><code class="language-bash">viridium clean
+</code></pre><p>Cleans up unused package data, including orphaned packages.</p><p>This is a shortcut for:</p><pre><code class="language-bash">vbuild -Yc
+</code></pre><p>It is useful for routine system maintenance and freeing up space that is no longer needed by installed packages.</p><h3>info</h3><pre><code class="language-bash">viridium info
+</code></pre><p>Displays basic information about the current Viridium installation.</p><p>Information includes:</p><ul><li><p>Kernel</p></li><li><p>Hostname</p></li><li><p>Uptime</p></li><li><p>Installed package count</p></li></ul><p>This is intended as a quick overview rather than a complete hardware or system-information utility.</p><h3>doctor</h3><pre><code class="language-bash">viridium doctor
+</code></pre><p>Runs a series of checks against the current system.</p><p>The checks cover common problems such as:</p><ul><li><p>DNS</p></li><li><p>Disk space</p></li><li><p>Orphaned packages</p></li><li><p>Failed services</p></li><li><p>Other basic system conditions</p></li></ul><p>The output is intended to be readable and useful without requiring the user to manually check every component.</p><h3>doctor --fix</h3><pre><code class="language-bash">viridium doctor --fix
+</code></pre><p>Runs the normal diagnostic checks and attempts to fix problems that can be safely handled automatically.</p><p>Problems that cannot be safely fixed are reported instead.</p><p><code inline="">--fix</code> should not be treated as a replacement for manually diagnosing serious system problems.</p><h2>pacman and yay control</h2><p><code inline="">viridium</code> also controls the default lock on <code inline="">pacman</code> and <code inline="">yay</code>.</p><p>Viridium normally expects package management to go through <code inline="">vbuild</code>.</p><h3>unlock</h3><pre><code class="language-bash">sudo viridium unlock
+</code></pre><p>Temporarily unlocks the original <code inline="">pacman</code> and <code inline="">yay</code> commands.</p><p>A custom timeout can be supplied:</p><pre><code class="language-bash">sudo viridium unlock 30
+</code></pre><p>The number specifies the unlock duration in minutes.</p><h3>lock</h3><pre><code class="language-bash">sudo viridium lock
+</code></pre><p>Immediately re-locks <code inline="">pacman</code> and <code inline="">yay</code>.</p><p>An unlock also expires automatically when its timeout is reached.</p><h2>Why this is separate from vbuild</h2><p><code inline="">vbuild</code> is focused on packages.</p><p><code inline="">viridium</code> is focused on the rest of the system.</p><p>Keeping these responsibilities separate means package operations can remain inside <code inline="">vbuild</code>, while system maintenance and administrative functions can be provided through <code inline="">viridium</code>.</p><p>In practice:</p><pre><code class="language-text">vbuild
+    └── Package management
+<p>viridium<br>    ├── System maintenance<br>    ├── Diagnostics<br>    ├── System information<br>    └── Package-manager control<br></code></pre><h2>Command summary</h2><br><pre class="diagram-block">Command | Description
+-- | --
+viridium help | Display available commands
+viridium update | Update the system
+viridium clean | Clean unused package data
+viridium info | Display system information
+viridium doctor | Run system diagnostics
+viridium doctor --fix | Run diagnostics and fix supported problems
+sudo viridium unlock | Temporarily unlock pacman and yay
+sudo viridium unlock <minutes> | Unlock for a specified period
+sudo viridium lock | Lock pacman and yay immediately
+</pre><br></body></html></p></div>
+<div id="page-architecture" class="wiki-page-content" style="display:none;"><html><head></head><body><h1>Architecture</h1><p>Viridium is built around the Arch Linux package ecosystem with a small set of custom tools layered on top.</p><p>The project does not attempt to replace the underlying Arch system. Instead, Viridium provides its own installation and management workflow while continuing to use the existing Arch infrastructure.</p><h2>Overview</h2><p>The main components are:</p><pre><code class="language-text">                         Viridium Linux
+                                │
+              ┌─────────────────┴─────────────────┐
+              │                                   │
+          Installation                         System
+              │                                   │
+          vinstall                     ┌───────────┴───────────┐
+                                       │                       │
+                                    vbuild                 viridium
+                                       │                       │
+                              ┌────────┴────────┐       ┌──────┴──────┐
+                              │                 │       │             │
+                         Arch repos            AUR   Maintenance   Diagnostics
+</code></pre><p>Each component has a specific purpose.</p><h2>vinstall</h2><p><code inline="">vinstall</code> is responsible for creating a Viridium installation.</p><p>Its responsibilities include:</p><ul><li><p>Disk selection</p></li><li><p>Partition handling</p></li><li><p>Filesystem setup</p></li><li><p>Kernel installation</p></li><li><p>Base system installation</p></li><li><p>Hostname configuration</p></li><li><p>Timezone configuration</p></li><li><p>User creation</p></li><li><p><code inline="">sudo</code> configuration</p></li><li><p>EFI configuration</p></li><li><p>Bootloader installation</p></li></ul><p>The installer runs from the Viridium live environment and installs the system onto the selected disk or existing partitions.</p><p>It is not responsible for normal system management after installation.</p><h2>vbuild</h2><p><code inline="">vbuild</code> is the package-management layer.</p><p>Its main purpose is combining the two package sources used by Viridium:</p><pre><code class="language-text">Official Arch repositories
+            +
+           AUR
+            ↓
+         vbuild
+</code></pre><p>A traditional Arch setup often separates these:</p><pre><code class="language-text">pacman → official repositories
+yay    → AUR
+</code></pre><p>Viridium provides one interface instead.</p><h3>Package management flow</h3><p>A simplified package-management flow is:</p><pre><code class="language-text">User
+ │
+ ▼
+vbuild
+ │
+ ├──► Official repositories
+ │
+ └──► AUR
+</code></pre><p>This is the central design decision behind <code inline="">vbuild</code>.</p><p>It also allows Viridium to implement a faster package-management workflow than the traditional <code inline="">pacman</code> + AUR helper setup.</p><h2>viridium</h2><p><code inline="">viridium</code> sits above the lower-level system tools.</p><p>It provides commands for:</p><ul><li><p>Updating</p></li><li><p>Cleaning</p></li><li><p>Diagnostics</p></li><li><p>System information</p></li><li><p>Package-manager locking</p></li><li><p>Package-manager unlocking</p></li></ul><p>It can also act as a simple frontend for common <code inline="">vbuild</code> operations.</p><p>For example:</p><pre><code class="language-text">viridium update
+       │
+       ▼
+vbuild -Syu
+</code></pre><p>The purpose is to provide simple commands for common operations without adding another package-management implementation.</p><h2>pacman and yay</h2><p>The original Arch package tools still exist underneath the Viridium package-management system.</p><p>They are locked by default rather than removed.</p><p>The relationship is therefore:</p><pre><code class="language-text">                    Package management
+                           │
+                         vbuild
+                       /       \
+                      /         \
+             Arch repositories   AUR
+                      
+              pacman / yay
+                    │
+             compatibility /
+              temporary use
+</code></pre><p><code inline="">viridium</code> controls whether the original tools are accessible.</p><p>They can be temporarily unlocked when compatibility, development, or debugging requires them.</p><h2>NetworkManager</h2><p>Viridium uses NetworkManager for network configuration.</p><p>NetworkManager is separate from the Viridium package-management tools and provides the normal Linux networking layer.</p><p>Common interfaces include:</p><pre><code class="language-text">nmtui
+nmcli
+</code></pre><h2>systemd</h2><p>Viridium uses systemd for system initialization and service management.</p><p>This includes normal systemd functionality such as:</p><pre><code class="language-bash">systemctl
+</code></pre><p>Services can therefore be managed using the standard systemd tools.</p><h2>systemd-boot</h2><p>Viridium uses systemd-boot for UEFI booting.</p><p>The installer places the required boot files on the EFI System Partition and creates the Viridium boot entry.</p><p>Existing EFI entries can remain alongside it.</p><h2>Design principles</h2><p>Viridium's architecture is based around a few simple ideas.</p><h3>Keep the Arch ecosystem</h3><p>Viridium does not need to maintain a completely separate package ecosystem.</p><p>The Arch repositories and AUR already provide the packages required by the system.</p><h3>One package manager</h3><p>Normal package management goes through <code inline="">vbuild</code>.</p><p>This combines the official repositories and AUR and avoids requiring separate tools for normal package operations.</p><h3>Keep system tools separate</h3><p><code inline="">vinstall</code>, <code inline="">vbuild</code>, and <code inline="">viridium</code> have different responsibilities.</p><pre><code class="language-text">vinstall   → installation
+vbuild     → packages
+viridium   → system management
+</code></pre><p>This separation keeps each component relatively focused.</p><h3>Don't remove the underlying tools</h3><p>Viridium does not permanently remove <code inline="">pacman</code> or <code inline="">yay</code>.</p><p>They remain available for compatibility and development purposes, but are locked during normal operation.</p><h2>Component summary</h2>
+Component | Responsibility
+-- | --
+vinstall | Installation
+vbuild | Package management
+viridium | System management
+pacman | Underlying Arch package manager
+yay | AUR helper / compatibility
+NetworkManager | Networking
+systemd | System and services
+systemd-boot | UEFI boot
+<p>This separation is the basis of the Viridium userspace.</p></body></html></div>
+<div id="page-boot-and-uefi" class="wiki-page-content" style="display:none;"><h1>Boot and UEFI</h1>
+<p>Viridium currently uses UEFI booting and systemd-boot.</p>
+<h2>UEFI</h2>
+<p>Viridium requires a UEFI-capable system.</p>
+<p>Legacy BIOS/CSM installation is not supported by the installer.</p>
+<h2>EFI System Partition</h2>
+<p>The EFI System Partition contains the boot files required to start Viridium.</p>
+<p>When installing with existing partitions, an existing EFI System Partition can be reused.</p>
+<p>This is particularly useful for dual-boot systems.</p>
+<h2>Dual boot</h2>
+<p>Viridium can share an EFI System Partition with other operating systems.</p>
+<p>For example:</p>
+<pre><code>EFI System Partition
+├── Microsoft
+└── Viridium
+</code></pre>
+<p>The installer does not remove existing boot entries.</p>
+<p>A Windows Boot Manager entry can therefore remain alongside the Viridium boot entry.</p>
+<h2>systemd-boot</h2>
+<p>Viridium installs systemd-boot as its UEFI bootloader.</p>
+<p>The bootloader is installed to the EFI System Partition selected during installation.</p>
+<h2>Checking boot entries</h2>
+<p>From a working Linux installation, EFI boot entries can be inspected with:</p>
+<pre><code>efibootmgr
+</code></pre>
+<p>The Viridium entry should be present after a successful installation.</p>
+<h2>Boot problems</h2>
+<p>If Viridium does not boot, check:</p>
+<p>1. The firmware is running in UEFI mode.<br>2. The EFI System Partition exists.<br>3. The correct EFI partition was used during installation.<br>4. The Viridium boot entry exists.<br>5. The firmware has not disabled or removed the entry.</p>
+<p>For further diagnostics, boot another Linux environment and inspect the EFI configuration.</p></div>
+<div id="page-development" class="wiki-page-content" style="display:none;"><h1>Development</h1>
+<p>This page covers development of Viridium itself.</p>
+<p>Viridium is made up of several components rather than being a single program. Changes should generally be made to the component responsible for the affected functionality.</p>
+<h2>Repository</h2>
+<p>The Viridium source code is maintained in the project's Git repository.</p>
+<p>The repository contains the installer, package-management components, system-management utilities, and supporting files required to build the distribution.</p>
+<h2>Main components</h2>
+<h3>vinstall</h3>
+<code>vinstall</code> contains the installation logic.
+<p>Changes to this component can affect:</p>
+<li>Partitioning</li>
+<li>Filesystems</li>
+<li>Kernel installation</li>
+<li>User creation</li>
+<li>System configuration</li>
+<li>EFI setup</li>
+<li>Bootloader installation</li>
+<li>Package installation</li>
+<p>Installer changes should be tested carefully because errors can affect the target disk.</p>
+<h3>vbuild</h3>
+<code>vbuild</code> contains the package-management logic.
+<p>It is responsible for the unified package workflow between:</p>
+<pre><code>Official repositories
+        +
+       AUR
+        ↓
+     vbuild
+</code></pre>
+<p>Changes to <code>vbuild</code> should be tested against both package sources.</p>
+<p>Package installation, searching, updating, removal, and dependency handling are particularly important areas to test.</p>
+<h3>viridium</h3>
+<code>viridium</code> contains the higher-level system-management commands.
+<p>This includes:</p>
+<li><code>update</code></li>
+<li><code>clean</code></li>
+<li><code>info</code></li>
+<li><code>doctor</code></li>
+<li><code>doctor --fix</code></li>
+<li><code>unlock</code></li>
+<li><code>lock</code></li>
+<p>Changes should be checked both directly and through the commands that call other Viridium components.</p>
+<h2>Development workflow</h2>
+<p>A typical development cycle is:</p>
+<pre><code>Change code
+    │
+    ▼
+Build
+    │
+    ▼
+Test
+    │
+    ▼
+Fix issues
+    │
+    ▼
+Test again
+    │
+    ▼
+Commit
+</code></pre>
+<p>Do not assume that a successful build means the change works correctly. Installer and package-management changes in particular need to be tested in an actual installation environment.</p>
+<h2>Testing</h2>
+<h3>Installer testing</h3>
+<p>Installer changes should preferably be tested in a virtual machine or on a dedicated test disk.</p>
+<p>This is especially important for changes involving:</p>
+<li>Partitioning</li>
+<li>Filesystem creation</li>
+<li>Mounting</li>
+<li>EFI partitions</li>
+<li>Bootloader installation</li>
+<li>Disk detection</li>
+<p>Testing these changes directly against a normal installation can result in data loss if something goes wrong.</p>
+<h3>Package manager testing</h3>
+<code>vbuild</code> should be tested with both official repository packages and AUR packages.
+<p>Basic tests include:</p>
+<pre><code>vbuild -Ss package
+vbuild -S package
+vbuild -Syu
+vbuild -Rns package
+vbuild -Yc
+</code></pre>
+<p>Tests should also cover packages that have dependencies and packages that are already installed.</p>
+<h3>viridium testing</h3>
+<p>The common commands should be tested individually:</p>
+<pre><code>viridium update
+viridium clean
+viridium info
+viridium doctor
+viridium doctor --fix
+</code></pre>
+<p>The locking system should also be tested:</p>
+<pre><code>sudo viridium unlock
+sudo viridium lock
+</code></pre>
+<p>and with a custom timeout:</p>
+<pre><code>sudo viridium unlock 30
+</code></pre>
+<h2>Testing pacman and yay handling</h2>
+<p>Because <code>pacman</code> and <code>yay</code> are intentionally restricted, changes to their handling should be tested carefully.</p>
+<p>At minimum, verify:</p>
+<p>1. Direct use is blocked normally.<br>2. The user receives the appropriate replacement information.<br>3. <code>vbuild</code> continues to work normally.<br>4. <code>viridium unlock</code> enables the original tools.<br>5. <code>viridium lock</code> disables them again.<br>6. The automatic timeout works.<br>7. A custom timeout works.</p>
+<h2>Development environments</h2>
+<p>For major installer or boot changes, a virtual machine is preferred.</p>
+<p>A VM allows the complete installation process to be tested without modifying a normal installation.</p>
+<p>For smaller changes to <code>vbuild</code> or <code>viridium</code>, development can be performed on an existing Viridium installation as long as the changes are tested carefully.</p>
+<h2>Debugging</h2>
+<p>When debugging a component, first determine which layer is responsible.</p>
+<p>For example:</p>
+<pre class="diagram-block">Installation problem
+        ↓
+     vinstall
+
+Package problem
+        ↓
+      vbuild
+
+System-management problem
+        ↓
+    viridium
+
+Service problem
+        ↓
+     systemd
+
+Network problem
+        ↓
+ NetworkManager
+
+Boot problem
+        ↓
+    EFI / systemd-boot
+</pre>
+<p>This helps avoid changing the wrong component to fix a problem that originates somewhere else.</p>
+<h2>Code changes</h2>
+<p>Keep changes focused on the component being modified.</p>
+<p>For example, package-management behaviour should normally be implemented in <code>vbuild</code> rather than duplicated inside <code>viridium</code>.</p>
+<p>Likewise, <code>viridium update</code> should call the package-management functionality rather than implementing another update system.</p>
+<p>This keeps the project from accumulating multiple implementations of the same operation.</p>
+<h2>Documentation</h2>
+<p>When adding or changing a user-facing feature, update the relevant wiki page.</p>
+<p>The documentation should describe:</p>
+<li>What the feature does</li>
+<li>Why it exists</li>
+<li>How to use it</li>
+<li>Relevant commands</li>
+<li>Important limitations</li>
+<li>Any compatibility considerations</li>
+<p>Commands should be shown as runnable examples where possible.</p>
+<h2>Releases</h2>
+<p>Before a release, test the main system paths:</p>
+<pre class="diagram-block">Live environment
+      ↓
+   vinstall
+      ↓
+ Installed system
+      ↓
+    vbuild
+      ↓
+ Package management
+      ↓
+  viridium
+      ↓
+Maintenance / diagnostics
+</pre>
+<p>A release should at minimum be able to:</p>
+<li>Install successfully</li>
+<li>Boot successfully</li>
+<li>Create and log into a user</li>
+<li>Connect to the network</li>
+<li>Install packages</li>
+<li>Search for packages</li>
+<li>Update packages</li>
+<li>Remove packages</li>
+<li>Handle AUR packages</li>
+<li>Run <code>viridium doctor</code></li>
+<li>Lock and unlock <code>pacman</code>/<code>yay</code></li>
+<h2>Development priorities</h2>
+<p>Viridium's development is primarily focused on keeping the system simple and consistent.</p>
+<p>New features should fit into the existing architecture instead of creating another separate way of doing something that Viridium already handles.</p>
+<p>The basic separation should remain:</p>
+<pre><code>vinstall
+    installation
+
+vbuild
+    package management
+
+viridium
+    system management
+</code></pre>
+</div>
+<div id="page-networking" class="wiki-page-content" style="display:none;"><h1>Networking</h1>
+<p>Viridium uses NetworkManager for network configuration.</p>
+<p>NetworkManager is enabled by default.</p>
+<h2>nmtui</h2>
+<code>nmtui</code> provides a terminal-based interface for NetworkManager.
+<p>Start it with:</p>
+<pre><code>nmtui
+</code></pre>
+<p>It can be used to connect to Wi-Fi and configure network connections without manually entering the required <code>nmcli</code> commands.</p>
+<h2>nmcli</h2>
+<code>nmcli</code> is available for direct command-line network management.
+<p>It is useful for scripting, automation, and users who prefer not to use the interactive interface.</p>
+<h2>Checking NetworkManager</h2>
+<p>Check the NetworkManager service with:</p>
+<pre><code>systemctl status NetworkManager
+</code></pre>
+<p>If necessary, restart it with:</p>
+<pre><code>sudo systemctl restart NetworkManager
+</code></pre>
+<h2>Checking DNS</h2>
+<p>Viridium's diagnostic tool can check common DNS problems:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>The current resolver state can also be inspected with:</p>
+<pre><code>resolvectl status
+</code></pre>
+<h2>No network connection</h2>
+<p>If Wi-Fi is not connected, start:</p>
+<pre><code>nmtui
+</code></pre>
+<p>and select the required network.</p>
+<p>If NetworkManager itself appears to be stopped:</p>
+<pre><code>systemctl status NetworkManager
+</code></pre>
+<p>Restart it if necessary:</p>
+<pre><code>sudo systemctl restart NetworkManager
+</code></pre>
+<p>If the problem is still unclear:</p>
+<pre><code>viridium doctor
+</code></pre>
+</div>
+<div id="page-package-management" class="wiki-page-content" style="display:none;"><h1>Package Management</h1>
+<p>Viridium uses <code>vbuild</code> as its normal package-management interface.</p>
+<h2>Package sources</h2>
+<p>Viridium uses the same general package ecosystem as Arch Linux:</p>
+<li>Official Arch repositories</li>
+<li>Arch User Repository (AUR)</li>
+<code>vbuild</code> handles both sources.
+<h2>Official repositories</h2>
+<p>Packages available through the normal Arch repositories are installed through <code>vbuild</code>:</p>
+<pre><code>vbuild -S package
+</code></pre>
+<h2>AUR</h2>
+<p>Packages available through the AUR are also handled through <code>vbuild</code>.</p>
+<p>The user does not need to switch to <code>yay</code> or another AUR helper for normal package installation.</p>
+<h2>Package management model</h2>
+<p>The intended model is:</p>
+<pre class="diagram-block">                 vbuild
+                /      \
+               /        \
+      Arch repositories  AUR
+</pre>
+<p>rather than:</p>
+<pre><code>pacman ──→ Arch repositories
+yay ─────→ AUR
+</code></pre>
+<p>This provides one entry point for package management.</p>
+<h2>Why pacman and yay are locked</h2>
+<code>pacman</code> and <code>yay</code> are disabled for normal direct use.
+<p>The purpose is to prevent multiple package-management paths from being used at the same time.</p>
+<p>For example, a normal Viridium system should generally be managed through:</p>
+<pre><code>vbuild -Syu
+</code></pre>
+<p>rather than independently running <code>pacman</code> and <code>yay</code>.</p>
+<p>This also allows Viridium's package-management workflow to remain consistent.</p>
+<h2>Command translation</h2>
+<p>If a user runs <code>pacman</code> or <code>yay</code> directly, Viridium can detect the command and provide the equivalent <code>vbuild</code> command.</p>
+<p>This makes accidentally using the wrong command less disruptive.</p>
+<h2>Unlocking</h2>
+<p>When direct access to the original tools is actually required:</p>
+<pre><code>sudo viridium unlock
+</code></pre>
+<p>A custom duration can be specified:</p>
+<pre><code>sudo viridium unlock 30
+</code></pre>
+<p>Lock them immediately with:</p>
+<pre><code>sudo viridium lock
+</code></pre>
+<p>The tools automatically lock again after the timeout.</p>
+<h2>When should pacman or yay be unlocked?</h2>
+<p>The normal answer is: only when something specifically requires them.</p>
+<p>Examples include:</p>
+<li>Testing package-management behaviour</li>
+<li>Development</li>
+<li>Scripts expecting the original commands</li>
+<li>Debugging package-manager issues</li>
+<p>For normal package installation and updates, use <code>vbuild</code>.</p></div>
+<div id="page-troubleshooting" class="wiki-page-content" style="display:none;"><h1>Troubleshooting</h1>
+<p>This page covers some of the more common problems encountered while using Viridium.</p>
+<h2>Start with viridium doctor</h2>
+<p>For general problems, run:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>It checks several common system conditions and reports anything it finds.</p>
+<p>If supported fixes are available:</p>
+<pre><code>viridium doctor --fix
+</code></pre>
+<h2>No network connection</h2>
+<p>Check NetworkManager:</p>
+<pre><code>systemctl status NetworkManager
+</code></pre>
+<p>If it is not working correctly:</p>
+<pre><code>sudo systemctl restart NetworkManager
+</code></pre>
+<p>For Wi-Fi:</p>
+<pre><code>nmtui
+</code></pre>
+<h2>DNS problems</h2>
+<p>Run:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>You can also inspect the resolver configuration:</p>
+<pre><code>resolvectl status
+</code></pre>
+<h2>Low disk space</h2>
+<p>Check the system:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>Then clean unused package data:</p>
+<pre><code>viridium clean
+</code></pre>
+<p>Or directly:</p>
+<pre><code>vbuild -Yc
+</code></pre>
+<h2>Orphaned packages</h2>
+<p>Remove orphaned packages with:</p>
+<pre><code>viridium clean
+</code></pre>
+<p>or:</p>
+<pre><code>vbuild -Yc
+</code></pre>
+<h2>Failed services</h2>
+<p>List failed systemd services:</p>
+<pre><code>systemctl --failed
+</code></pre>
+<p>Check a specific service with:</p>
+<pre><code>systemctl status service-name
+</code></pre>
+<h2>pacman or yay will not run</h2>
+<p>This is expected behaviour.</p>
+<p>Both commands are locked by default.</p>
+<p>Use:</p>
+<pre><code>vbuild
+</code></pre>
+<p>for normal package management.</p>
+<p>If the original tool is actually required:</p>
+<pre><code>sudo viridium unlock
+</code></pre>
+<h2>Package installation problems</h2>
+<p>First check the network:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>Then retry the package operation.</p>
+<p>For example:</p>
+<pre><code>vbuild -S package
+</code></pre>
+<p>If the issue involves the underlying package tools, they can be temporarily unlocked for further testing.</p>
+<h2>Boot problems</h2>
+<p>If the system does not boot, see <a href="#boot-and-uefi" onclick="showPage('boot-and-uefi')">Boot and UEFI</a>.</p>
+<p>From another Linux environment, EFI boot entries can be checked with:</p>
+<pre><code>efibootmgr
+</code></pre>
+<h2>Installation problems</h2>
+<p>If installation fails, check:</p>
+<li>Network connectivity</li>
+<li>Selected disk</li>
+<li>EFI System Partition</li>
+<li>Available disk space</li>
+<li>Installer output</li>
+<p>Do not retry a destructive installation without checking which disk is selected first.</p></div>
+<div id="page-faq" class="wiki-page-content" style="display:none;"><h1>Frequently Asked Questions</h1>
+<h2>Is Viridium actually Arch?</h2>
+<p>Viridium is Arch-based and uses the Arch package ecosystem, including the official repositories and AUR.</p>
+<p>The main differences are Viridium's installer and management tools.</p>
+<h2>Does Viridium use the AUR?</h2>
+<p>Yes.</p>
+<p>AUR packages are handled through <code>vbuild</code>.</p>
+<h2>Do I need yay?</h2>
+<p>No.</p>
+<code>vbuild</code> is designed to handle both official repository packages and AUR packages.
+<h2>Why was vbuild created?</h2>
+<p>The main reason is to combine the official Arch repositories and the AUR into one package manager.</p>
+<p>It also uses a faster package-management workflow than the traditional <code>pacman</code> + AUR helper setup.</p>
+<h2>Can I still use pacman?</h2>
+<p>Yes.</p>
+<code>pacman</code> is locked by default, but it can be temporarily unlocked:
+<pre><code>sudo viridium unlock
+</code></pre>
+<h2>Can I still use yay?</h2>
+<p>Yes.</p>
+<code>yay</code> is also locked by default and can be temporarily unlocked in the same way.
+<h2>Why are pacman and yay locked?</h2>
+<p>Viridium is designed around <code>vbuild</code> being the single normal entry point for package management.</p>
+<p>Allowing three different package-management paths would defeat the purpose of combining the official repositories and AUR.</p>
+<h2>Does Viridium replace Arch's packages?</h2>
+<p>No.</p>
+<p>Viridium uses the Arch package ecosystem rather than maintaining an entirely separate package ecosystem.</p>
+<h2>Does Viridium support dual boot?</h2>
+<p>Yes.</p>
+<p>An existing EFI System Partition can be reused, and existing boot entries are left in place.</p>
+<h2>What bootloader does Viridium use?</h2>
+<p>Viridium uses systemd-boot on UEFI systems.</p>
+<h2>Does Viridium use systemd?</h2>
+<p>Yes.</p>
+<h2>How do I update?</h2>
+<p>Either:</p>
+<pre><code>vbuild -Syu
+</code></pre>
+<p>or:</p>
+<pre><code>viridium update
+</code></pre>
+<h2>How do I clean the system?</h2>
+<pre><code>viridium clean
+</code></pre>
+<p>or:</p>
+<pre><code>vbuild -Yc
+</code></pre>
+<h2>How do I check for problems?</h2>
+<pre><code>viridium doctor
+</code></pre>
+<p>For automatic fixes where supported:</p>
+<pre><code>viridium doctor --fix
+</code></pre>
+<h2>How do I connect to Wi-Fi?</h2>
+<p>Run:</p>
+<pre><code>nmtui
+</code></pre>
+<h2>Where should I start if something is broken?</h2>
+<p>Run:</p>
+<pre><code>viridium doctor
+</code></pre>
+<p>Then check the relevant page in this wiki.</p></div>
+</main><script>function showPage(pageId){document.querySelectorAll(".wiki-page-content").forEach(p=>p.style.display="none");document.querySelectorAll("aside a").forEach(l=>l.classList.remove("active-link"));const targetPage=document.getElementById("page-"+pageId);if(targetPage){targetPage.style.display="block";document.getElementById("link-"+pageId).classList.add("active-link");window.scrollTo(0,0);}}window.addEventListener("DOMContentLoaded",()=>{const hash=window.location.hash.replace("#","")||"home";showPage(hash);});window.addEventListener("hashchange",()=>{const hash=window.location.hash.replace("#","")||"home";showPage(hash);});</script></body></html>
