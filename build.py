@@ -106,6 +106,26 @@ def parse_table(lines):
     return "\n".join(out)
 
 
+def is_prerendered_html(text: str) -> bool:
+    """Detect wiki source files that already contain full HTML markup
+    (some pages in this wiki were saved as rendered HTML rather than
+    plain Markdown). These must NOT be run through the markdown parser
+    or they get double-escaped and show up as literal tag text."""
+    return bool(re.search(r"<html[^>]*>", text, re.IGNORECASE)) or \
+           bool(re.search(r"<body[^>]*>", text, re.IGNORECASE))
+
+
+def extract_body_html(text: str) -> str:
+    """Pull the inner content out of a pre-rendered HTML source file."""
+    match = re.search(r"<body[^>]*>(.*)</body>", text, re.IGNORECASE | re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    # No <body> wrapper found; strip <html>/<head> tags if present and return the rest
+    cleaned = re.sub(r"</?html[^>]*>", "", text, flags=re.IGNORECASE)
+    cleaned = re.sub(r"<head[^>]*>.*?</head>", "", cleaned, flags=re.IGNORECASE | re.DOTALL)
+    return cleaned.strip()
+
+
 def markdown_to_html(md_text: str) -> str:
     lines = md_text.replace("\r\n", "\n").split("\n")
     html_parts = []
@@ -402,11 +422,36 @@ def render_page(slug: str, title: str, body_html: str) -> str:
 # Build process
 # ---------------------------------------------------------------------------
 
+def _normalize_filename(name: str) -> str:
+    """Normalize a filename for loose matching: strip extension, drop
+    spaces/hyphens/underscores, lowercase."""
+    base = os.path.splitext(name)[0]
+    return re.sub(r"[-_\s]+", "", base).lower()
+
+
 def find_source_file(candidates):
+    # 1. Try exact filename matches first.
     for name in candidates:
         path = os.path.join(WIKI_DIR, name)
         if os.path.isfile(path):
             return path
+
+    # 2. Fall back to a case/spacing/hyphen-insensitive match against
+    #    whatever .md files actually exist in the wiki directory. This
+    #    catches cases like "Package-Management.md" vs "Package-management.md"
+    #    or "Package Management.md".
+    try:
+        actual_files = os.listdir(WIKI_DIR)
+    except FileNotFoundError:
+        return None
+
+    candidate_norms = {_normalize_filename(c) for c in candidates}
+    for fname in actual_files:
+        if not fname.lower().endswith(".md"):
+            continue
+        if _normalize_filename(fname) in candidate_norms:
+            return os.path.join(WIKI_DIR, fname)
+
     return None
 
 
@@ -427,9 +472,16 @@ def build():
             continue
 
         with open(src_path, "r", encoding="utf-8") as f:
-            md_text = f.read()
+            source_text = f.read()
 
-        body_html = markdown_to_html(md_text)
+        if is_prerendered_html(source_text):
+            # Source file already contains rendered HTML - use its
+            # content directly instead of running it through the
+            # markdown parser (which would escape and mangle it).
+            body_html = extract_body_html(source_text)
+        else:
+            body_html = markdown_to_html(source_text)
+
         page_html = render_page(slug, title, body_html)
 
         if slug == "":
@@ -442,7 +494,8 @@ def build():
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(page_html)
 
-        print(f"Built: {src_path} -> {out_path}")
+        mode = "pre-rendered HTML" if is_prerendered_html(source_text) else "markdown"
+        print(f"Built ({mode}): {src_path} -> {out_path}")
         built += 1
 
     print(f"\nDone. {built}/{len(PAGES)} pages built.")
