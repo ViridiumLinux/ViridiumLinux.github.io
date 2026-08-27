@@ -1,16 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Home</title><style>:root { --bg-main: #141210; --bg-sidebar: #1f1a16; --text-main: #f5f2eb; --accent: #ff8838; --border: #382414; } body { font-family: sans-serif; margin: 0; display: flex; background: var(--bg-main); color: var(--text-main); min-height: 100vh; } aside { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 25px; position: fixed; height: 100vh; } aside ul { list-style: none; padding: 0; } aside li { margin-bottom: 10px; } aside a { color: #bcada1; text-decoration: none; } .download-btn { display: block; background: #ff8838; color: #141210 !important; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 20px; text-align: center; text-decoration: none; } main { flex: 1; padding: 40px 60px; margin-left: 280px; } h1, h2, h3 { color: var(--accent); } pre { background: #0c0a09; padding: 15px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; }</style></head><body><aside><h2>Viridium Wiki</h2><ul><li><a href="https://github.iohome/">Home</a></li><li><a href="https://github.ioinstallation/">Installation</a></li><li><a href="https://github.ioconfiguration/">Configuration</a></li><li><a href="https://github.iovbuild/">vbuild</a></li><li><a href="https://github.ioviridium/">viridium</a></li><li><a href="https://github.ioarchitecture/">Architecture</a></li><li><a href="https://github.ioboot-and-uefi/">Boot and UEFI</a></li><li><a href="https://github.iodevelopment/">Development</a></li><li><a href="https://github.ionetworking/">Networking</a></li><li><a href="https://github.iopackage-management/">Package management</a></li><li><a href="https://github.iotroubleshooting/">Troubleshooting</a></li><li><a href="https://github.iofaq/">FAQ</a></li></ul><a href="https://github.com" class="download-btn">INSTALL VIRIDIUM ISO</a></aside><main><html><head></head><body><h1>Viridium Linux</h1><p>Viridium Linux is a minimal, Arch-based Linux distribution.</p><p>It uses the Arch Linux package ecosystem, including the official repositories and the AUR, while providing its own installer and system-management tools.</p><p>Viridium is designed to keep the parts of Arch that are useful and familiar while making a few parts of the system simpler to use.
-
-<h2>vbuild</h2><p><code inline="">vbuild</code> is the main package manager in Viridium.</p><p>Its primary purpose is combining the <strong>official Arch repositories and the AUR</strong> into one package-management interface.</p><p>On a normal Arch installation, package management commonly looks like:</p><pre><code class="language-text">pacman → official repositories
-yay    → AUR
-</code></pre><p>Viridium instead uses:</p><pre><code class="language-text">vbuild → official repositories + AUR
-</code></pre><p>This means you don't have to switch between two different programs depending on where a package comes from.</p><p><code inline="">vbuild</code> is also designed around a faster workflow than the traditional <code inline="">pacman</code> + AUR helper setup.</p><p>Its command syntax is intentionally similar to <code inline="">pacman</code>, so existing Arch users don't have to learn an entirely different command structure.</p><h2>vinstall</h2><p><code inline="">vinstall</code> is the Viridium installer.</p><p>It handles the initial system setup, including:</p><ul><li><p>Disk configuration</p></li><li><p>Filesystems</p></li><li><p>Kernel selection</p></li><li><p>Hostname</p></li><li><p>Timezone</p></li><li><p>User creation</p></li><li><p>Base package installation</p></li><li><p>EFI configuration</p></li><li><p>Bootloader installation</p></li></ul><p>It can either wipe an entire disk or install using existing partitions.</p><h2>viridium</h2><p><code inline="">viridium</code> is the general system-management command.</p><p>It provides commands for things such as:</p><pre><code class="language-bash">viridium update
-viridium clean
-viridium info
-viridium doctor
-</code></pre><p>It also manages the temporary unlocking of <code inline="">pacman</code> and <code inline="">yay</code>.</p><h2>Package management</h2><p>Normal package management should be done through <code inline="">vbuild</code>.</p><p>For example:</p><pre><code class="language-bash">vbuild -S firefox
-</code></pre><p>Update the system with:</p><pre><code class="language-bash">vbuild -Syu
-</code></pre><p>Search for a package with:</p><pre><code class="language-bash">vbuild -Ss firefox
-</code></pre><p>See <a href="https://github.iovbuild/">vbuild</a> for the full command reference.</p><h2>Installation</h2><p>Boot the Viridium live environment and run:</p><pre><code class="language-bash">vinstall
-</code></pre><p>See <a href="https://github.ioInstallation/">Installation</a> for the complete installation procedure.</p><h2>Getting help</h2><p>For system diagnostics:</p><pre><code class="language-bash">viridium doctor
-</code></pre><p>For command help:</p><pre><code class="language-bash">viridium help
-</code></pre><p>The <a href="https://github.ioTroubleshooting/">Troubleshooting</a> page covers common problems and their solutions.</p><h2>Wiki pages</h2><h3>Installation</h3><ul><li><p><a href="https://github.ioInstallation/">Installation</a></p></li><li><p><a href="https://github.ioBoot and UEFI/">Boot and UEFI</a></p></li></ul><h3>Package management</h3><ul><li><p><a href="https://github.iovbuild/">vbuild</a></p></li><li><p><a href="https://github.ioPackage Management/">Package Management</a></p></li></ul><h3>System management</h3><ul><li><p><a href="https://github.ioviridium/">viridium</a></p></li><li><p><a href="https://github.ioNetworking/">Networking</a></p></li><li><p><a href="https://github.ioConfiguration/">Configuration</a></p></li></ul><h3>Troubleshooting</h3><ul><li><p><a href="https://github.ioTroubleshooting/">Troubleshooting</a></p></li><li><p><a href="https://github.ioFAQ/">FAQ</a></p></li></ul><h3>Development</h3><ul><li><p><a href="https://github.ioArchitecture/">Architecture</a></p></li><li><p><a href="https://github.ioDevelopment/">Development</a></p></li></ul></body></html></main></body></html>
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll(".wiki-page-content").forEach(p => p.style.display = "none");
+            document.querySelectorAll("aside a").forEach(l => l.classList.remove("active-link"));
+            const targetPage = document.getElementById("page-" + pageId);
+            if (targetPage) {
+                targetPage.style.display = "block";
+                const activeLink = document.getElementById("link-" + pageId);
+                if (activeLink) activeLink.classList.add("active-link");
+                window.scrollTo(0, 0);
+            }
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+            const hash = window.location.hash.replace("#", "") || "home";
+            showPage(hash);
+        });
+        window.addEventListener("hashchange", () => {
+            const hash = window.location.hash.replace("#", "") || "home";
+            showPage(hash);
+        });
+    </script>
+</body>
+</html>
