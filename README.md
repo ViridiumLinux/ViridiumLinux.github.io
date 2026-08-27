@@ -20,3 +20,5 @@ Boot the Viridium live environment and run:
 
 ```bash
 vinstall
+```
+See the [wiki](https://github.com/vDelta01/Viridium-Linux/wiki) for more info.
