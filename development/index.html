@@ -1,432 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Development — Viridium Linux</title>
-
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Development - Viridium Linux</title>
+<style>
 
 :root {
-    --background: #141210;
-    --sidebar: #1f1a16;
-    --sidebar-hover: #2a211b;
-    --border: #382414;
+    --bg-main: #141210;
+    --bg-sidebar: #1f1a16;
+    --border-color: #382414;
     --accent: #ff8838;
-    --accent-hover: #ff9d59;
-    --text: #e9e2dc;
-    --muted: #a79c93;
-    --code: #191512;
-    --table-alt: #191512;
-    --blockquote: #201913;
+    --text-main: #e8e0d8;
+    --text-dim: #a89a8c;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
+html, body {
     margin: 0;
-    background: var(--background);
-    color: var(--text);
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-    line-height: 1.7;
+    padding: 0;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
 }
 
-a {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-a:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
 .layout {
     display: flex;
     min-height: 100vh;
 }
 
-/* ------------------------------------------------------------
-   Sidebar
-   ------------------------------------------------------------ */
-
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 270px;
-    height: 100vh;
-    overflow-y: auto;
-
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-
-    padding: 28px 20px;
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 24px 16px;
 }
 
-.logo {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+.sidebar h1 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin: 0 0 20px 4px;
 }
 
-.logo-title {
-    color: var(--accent);
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.sidebar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.logo-subtitle {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 3px;
-}
+.sidebar nav li { margin-bottom: 2px; }
 
-.nav-title {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin: 0 0 10px 4px;
-}
-
-.nav {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.nav a {
+.sidebar nav a {
     display: block;
-    padding: 9px 11px;
+    padding: 8px 10px;
     border-radius: 6px;
-    color: #cfc6bf;
-    font-size: 14px;
-    transition:
-        background 0.12s ease,
-        color 0.12s ease;
+    color: var(--text-dim);
+    font-size: 0.95rem;
 }
 
-.nav a:hover {
-    background: var(--sidebar-hover);
-    color: var(--text);
+.sidebar nav a:hover {
+    background: rgba(255, 136, 56, 0.1);
+    color: var(--text-main);
     text-decoration: none;
 }
 
-.nav a.active {
-    background: #2b211a;
+.sidebar nav a.active {
+    background: rgba(255, 136, 56, 0.15);
     color: var(--accent);
     font-weight: 600;
 }
 
-.install-button {
+.install-btn {
     display: block;
-    margin-top: 25px;
-    padding: 11px 14px;
-
+    margin: 8px 4px 24px 4px;
+    padding: 12px 14px;
     background: var(--accent);
-    color: #17110d;
-
-    border-radius: 6px;
+    color: #141210;
+    font-weight: 700;
     text-align: center;
-
-    font-size: 14px;
-    font-weight: 800;
-
-    transition:
-        background 0.12s ease,
-        transform 0.12s ease;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
 }
 
-.install-button:hover {
-    background: var(--accent-hover);
-    color: #17110d;
+.install-btn:hover {
+    background: #ff9a55;
     text-decoration: none;
-    transform: translateY(-1px);
 }
-
-/* ------------------------------------------------------------
-   Content
-   ------------------------------------------------------------ */
 
 .content {
-    width: calc(100% - 270px);
-    margin-left: 270px;
-    padding: 55px 65px 80px;
+    flex: 1;
+    padding: 40px 56px;
+    max-width: 900px;
 }
 
-.article {
-    max-width: 950px;
-    margin: 0 auto;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: #f4eee9;
-    line-height: 1.25;
-    margin-top: 1.7em;
-    margin-bottom: 0.65em;
-}
-
-h1 {
-    margin-top: 0;
-    font-size: 36px;
-    letter-spacing: -1px;
-}
-
-h2 {
-    font-size: 27px;
+.content h1, .content h2, .content h3 {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
 }
 
-h3 {
-    font-size: 22px;
+.content pre.ascii-block {
+    background: #100e0c;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    color: var(--text-main);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9rem;
 }
 
-h4 {
-    font-size: 18px;
-}
+.content pre.ascii-block a { text-decoration: none !important; color: inherit !important; }
 
-p {
-    margin: 0 0 16px;
-}
-
-strong {
-    color: #fff5ed;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid var(--border);
-    margin: 35px 0;
-}
-
-/* ------------------------------------------------------------
-   Code
-   ------------------------------------------------------------ */
-
-code {
-    background: var(--code);
-    border: 1px solid var(--border);
-    border-radius: 4px;
+.content code {
+    background: #100e0c;
     padding: 2px 6px;
-
-    color: #f0d6c3;
-    font-family:
-        "JetBrains Mono",
-        "Cascadia Code",
-        "Fira Code",
-        Consolas,
-        monospace;
-
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.9em;
 }
 
-pre {
-    margin: 22px 0;
-    padding: 18px;
-
-    overflow-x: auto;
-
-    background: var(--code);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-
-    line-height: 1.55;
-}
-
-pre code {
+.content pre code {
+    background: none;
     padding: 0;
-    border: 0;
-    background: transparent;
-
-    color: #ddd3cb;
-    font-size: 13px;
 }
 
-/* ------------------------------------------------------------
-   Tables
-   ------------------------------------------------------------ */
-
-.table-wrapper {
-    width: 100%;
+.table-wrap {
     overflow-x: auto;
-    margin: 22px 0;
+    margin: 20px 0;
 }
 
 table {
-    width: 100%;
     border-collapse: collapse;
-
-    border: 1px solid var(--border);
-    background: var(--background);
+    width: 100%;
 }
 
-th,
-td {
-    padding: 10px 13px;
-    border: 1px solid var(--border);
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 10px 14px;
     text-align: left;
 }
 
 th {
-    background: #211a15;
+    background: var(--bg-sidebar);
     color: var(--accent);
-    font-weight: 700;
 }
 
-tr:nth-child(even) td {
-    background: var(--table-alt);
+tr.row-even { background: #1a1613; }
+tr.row-odd { background: #141210; }
+
+footer.site-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-dim);
+    font-size: 0.85rem;
 }
 
-/* ------------------------------------------------------------
-   Lists
-   ------------------------------------------------------------ */
-
-ul,
-ol {
-    margin-top: 8px;
-    margin-bottom: 18px;
-    padding-left: 28px;
-}
-
-li {
-    margin: 4px 0;
-}
-
-/* ------------------------------------------------------------
-   Blockquotes
-   ------------------------------------------------------------ */
-
-blockquote {
-    margin: 20px 0;
-    padding: 10px 18px;
-
-    background: var(--blockquote);
-    border-left: 3px solid var(--accent);
-
-    color: #c5bbb3;
-}
-
-/* ------------------------------------------------------------
-   Footer
-   ------------------------------------------------------------ */
-
-.footer {
-    margin-top: 70px;
-    padding-top: 20px;
-
-    border-top: 1px solid var(--border);
-
-    color: var(--muted);
-    font-size: 12px;
-}
-
-/* ------------------------------------------------------------
-   Mobile
-   ------------------------------------------------------------ */
-
-@media (max-width: 800px) {
-    .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .layout {
-        display: block;
-    }
-
-    .content {
-        width: 100%;
-        margin-left: 0;
-        padding: 35px 22px 60px;
-    }
-
-    .nav {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .install-button {
-        margin-bottom: 5px;
-    }
-}
-
-    </style>
+</style>
 </head>
-
 <body>
-
 <div class="layout">
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            <div class="logo-title">Viridium Linux</div>
-            <div class="logo-subtitle">Documentation</div>
-        </div>
-
-        <div class="nav-title">Documentation</div>
-
-        <nav class="nav">
-            <a href="https://github.io/">Home</a>
-<a href="https://github.io/installation/">Installation</a>
-<a href="https://github.io/configuration/">Configuration</a>
-<a href="https://github.io/vbuild/">vbuild</a>
-<a href="https://github.io/viridium/">viridium</a>
-<a href="https://github.io/architecture/">Architecture</a>
-<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
-<a href="https://github.io/development/" class="active">Development</a>
-<a href="https://github.io/networking/">Networking</a>
-<a href="https://github.io/package-management/">Package management</a>
-<a href="https://github.io/troubleshooting/">Troubleshooting</a>
-<a href="https://github.io/faq/">FAQ</a>
-        </nav>
-
-        <a
-            class="install-button"
-            href="https://github.com"
-        >
-            Install Viridium Linux
-        </a>
-
-    </aside>
-
-    <main class="content">
-
-        <article class="article">
-            <h1>Development</h1>
+  <aside class="sidebar">
+    <h1>Viridium Linux</h1>
+    <a class="install-btn" href="https://github.com/ViridiumLinux/ViridiumLinux.github.io/releases">Download ISO</a>
+    <nav>
+      <ul>
+        <li><a class="link" href="https://viridiumlinux.github.io/">Home</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/installation/">Installation</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/configuration/">Configuration</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/vbuild/">vbuild</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/viridium/">viridium</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/architecture/">Architecture</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/boot-and-uefi/">Boot and UEFI</a></li>
+<li><a class="link active" href="https://viridiumlinux.github.io/development/">Development</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/networking/">Networking</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/package-management/">Package management</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/troubleshooting/">Troubleshooting</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/faq/">FAQ</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="content">
+    <h1>Development</h1>
 <p>This page covers development of Viridium itself.</p>
 <p>Viridium is made up of several components rather than being a single program. Changes should generally be made to the component responsible for the affected functionality.</p>
 <h2>Repository</h2>
-<p>The Viridium source code is maintained in the project's Git repository.</p>
+<p>The Viridium source code is maintained in the project&#x27;s Git repository.</p>
 <p>The repository contains the installer, package-management components, system-management utilities, and supporting files required to build the distribution.</p>
 <h2>Main components</h2>
 <h3>vinstall</h3>
@@ -446,7 +212,7 @@ blockquote {
 <h3>vbuild</h3>
 <p><code>vbuild</code> contains the package-management logic.</p>
 <p>It is responsible for the unified package workflow between:</p>
-<pre><code>Official repositories
+<pre class="ascii-block"><code>Official repositories
         +
        AUR
         ↓
@@ -468,7 +234,7 @@ blockquote {
 <p>Changes should be checked both directly and through the commands that call other Viridium components.</p>
 <h2>Development workflow</h2>
 <p>A typical development cycle is:</p>
-<pre><code>Change code
+<pre class="ascii-block"><code>Change code
     │
     ▼
 Build
@@ -501,7 +267,7 @@ Commit</code></pre>
 <h3>Package manager testing</h3>
 <p><code>vbuild</code> should be tested with both official repository packages and AUR packages.</p>
 <p>Basic tests include:</p>
-<pre><code>vbuild -Ss package
+<pre class="ascii-block"><code>vbuild -Ss package
 vbuild -S package
 vbuild -Syu
 vbuild -Rns package
@@ -509,28 +275,20 @@ vbuild -Yc</code></pre>
 <p>Tests should also cover packages that have dependencies and packages that are already installed.</p>
 <h3>viridium testing</h3>
 <p>The common commands should be tested individually:</p>
-<pre><code>viridium update
+<pre class="ascii-block"><code>viridium update
 viridium clean
 viridium info
 viridium doctor
 viridium doctor --fix</code></pre>
 <p>The locking system should also be tested:</p>
-<pre><code>sudo viridium unlock
+<pre class="ascii-block"><code>sudo viridium unlock
 sudo viridium lock</code></pre>
 <p>and with a custom timeout:</p>
-<pre><code>sudo viridium unlock 30</code></pre>
+<pre class="ascii-block"><code>sudo viridium unlock 30</code></pre>
 <h2>Testing pacman and yay handling</h2>
 <p>Because <code>pacman</code> and <code>yay</code> are intentionally restricted, changes to their handling should be tested carefully.</p>
 <p>At minimum, verify:</p>
-<ol>
-<li>Direct use is blocked normally.</li>
-<li>The user receives the appropriate replacement information.</li>
-<li><code>vbuild</code> continues to work normally.</li>
-<li><code>viridium unlock</code> enables the original tools.</li>
-<li><code>viridium lock</code> disables them again.</li>
-<li>The automatic timeout works.</li>
-<li>A custom timeout works.</li>
-</ol>
+<p>1. Direct use is blocked normally. 2. The user receives the appropriate replacement information. 3. <code>vbuild</code> continues to work normally. 4. <code>viridium unlock</code> enables the original tools. 5. <code>viridium lock</code> disables them again. 6. The automatic timeout works. 7. A custom timeout works.</p>
 <h2>Development environments</h2>
 <p>For major installer or boot changes, a virtual machine is preferred.</p>
 <p>A VM allows the complete installation process to be tested without modifying a normal installation.</p>
@@ -538,7 +296,7 @@ sudo viridium lock</code></pre>
 <h2>Debugging</h2>
 <p>When debugging a component, first determine which layer is responsible.</p>
 <p>For example:</p>
-<pre><code>Installation problem
+<pre class="ascii-block"><code>Installation problem
         ↓
      vinstall
 
@@ -581,7 +339,7 @@ Boot problem
 <p>Commands should be shown as runnable examples where possible.</p>
 <h2>Releases</h2>
 <p>Before a release, test the main system paths:</p>
-<pre><code>Live environment
+<pre class="ascii-block"><code>Live environment
       ↓
    vinstall
       ↓
@@ -609,10 +367,10 @@ Maintenance / diagnostics</code></pre>
 <li>Lock and unlock <code>pacman</code>/<code>yay</code></li>
 </ul>
 <h2>Development priorities</h2>
-<p>Viridium's development is primarily focused on keeping the system simple and consistent.</p>
+<p>Viridium&#x27;s development is primarily focused on keeping the system simple and consistent.</p>
 <p>New features should fit into the existing architecture instead of creating another separate way of doing something that Viridium already handles.</p>
 <p>The basic separation should remain:</p>
-<pre><code>vinstall
+<pre class="ascii-block"><code>vinstall
     installation
 
 vbuild
@@ -620,15 +378,10 @@ vbuild
 
 viridium
     system management</code></pre>
-
-            <div class="footer">
-                Viridium Linux · Documentation
-            </div>
-        </article>
-
-    </main>
-
+    <footer class="site-footer">
+      <p>Viridium Linux documentation.</p>
+    </footer>
+  </main>
 </div>
-
 </body>
 </html>

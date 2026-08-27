@@ -1,439 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Architecture — Viridium Linux</title>
-
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture - Viridium Linux</title>
+<style>
 
 :root {
-    --background: #141210;
-    --sidebar: #1f1a16;
-    --sidebar-hover: #2a211b;
-    --border: #382414;
+    --bg-main: #141210;
+    --bg-sidebar: #1f1a16;
+    --border-color: #382414;
     --accent: #ff8838;
-    --accent-hover: #ff9d59;
-    --text: #e9e2dc;
-    --muted: #a79c93;
-    --code: #191512;
-    --table-alt: #191512;
-    --blockquote: #201913;
+    --text-main: #e8e0d8;
+    --text-dim: #a89a8c;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
+html, body {
     margin: 0;
-    background: var(--background);
-    color: var(--text);
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Helvetica,
-        Arial,
-        sans-serif;
-    line-height: 1.7;
+    padding: 0;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
 }
 
-a {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-a:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
 .layout {
     display: flex;
     min-height: 100vh;
 }
 
-/* ------------------------------------------------------------
-   Sidebar
-   ------------------------------------------------------------ */
-
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 270px;
-    height: 100vh;
-    overflow-y: auto;
-
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-
-    padding: 28px 20px;
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 24px 16px;
 }
 
-.logo {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+.sidebar h1 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin: 0 0 20px 4px;
 }
 
-.logo-title {
-    color: var(--accent);
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.sidebar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.logo-subtitle {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 3px;
-}
+.sidebar nav li { margin-bottom: 2px; }
 
-.nav-title {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin: 0 0 10px 4px;
-}
-
-.nav {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.nav a {
+.sidebar nav a {
     display: block;
-    padding: 9px 11px;
+    padding: 8px 10px;
     border-radius: 6px;
-    color: #cfc6bf;
-    font-size: 14px;
-    transition:
-        background 0.12s ease,
-        color 0.12s ease;
+    color: var(--text-dim);
+    font-size: 0.95rem;
 }
 
-.nav a:hover {
-    background: var(--sidebar-hover);
-    color: var(--text);
+.sidebar nav a:hover {
+    background: rgba(255, 136, 56, 0.1);
+    color: var(--text-main);
     text-decoration: none;
 }
 
-.nav a.active {
-    background: #2b211a;
+.sidebar nav a.active {
+    background: rgba(255, 136, 56, 0.15);
     color: var(--accent);
     font-weight: 600;
 }
 
-.install-button {
+.install-btn {
     display: block;
-    margin-top: 25px;
-    padding: 11px 14px;
-
+    margin: 8px 4px 24px 4px;
+    padding: 12px 14px;
     background: var(--accent);
-    color: #17110d;
-
-    border-radius: 6px;
+    color: #141210;
+    font-weight: 700;
     text-align: center;
-
-    font-size: 14px;
-    font-weight: 800;
-
-    transition:
-        background 0.12s ease,
-        transform 0.12s ease;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
 }
 
-.install-button:hover {
-    background: var(--accent-hover);
-    color: #17110d;
+.install-btn:hover {
+    background: #ff9a55;
     text-decoration: none;
-    transform: translateY(-1px);
 }
-
-/* ------------------------------------------------------------
-   Content
-   ------------------------------------------------------------ */
 
 .content {
-    width: calc(100% - 270px);
-    margin-left: 270px;
-    padding: 55px 65px 80px;
+    flex: 1;
+    padding: 40px 56px;
+    max-width: 900px;
 }
 
-.article {
-    max-width: 950px;
-    margin: 0 auto;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: #f4eee9;
-    line-height: 1.25;
-    margin-top: 1.7em;
-    margin-bottom: 0.65em;
-}
-
-h1 {
-    margin-top: 0;
-    font-size: 36px;
-    letter-spacing: -1px;
-}
-
-h2 {
-    font-size: 27px;
+.content h1, .content h2, .content h3 {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
 }
 
-h3 {
-    font-size: 22px;
+.content pre.ascii-block {
+    background: #100e0c;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    color: var(--text-main);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9rem;
 }
 
-h4 {
-    font-size: 18px;
-}
+.content pre.ascii-block a { text-decoration: none !important; color: inherit !important; }
 
-p {
-    margin: 0 0 16px;
-}
-
-strong {
-    color: #fff5ed;
-}
-
-hr {
-    border: 0;
-    border-top: 1px solid var(--border);
-    margin: 35px 0;
-}
-
-/* ------------------------------------------------------------
-   Code
-   ------------------------------------------------------------ */
-
-code {
-    background: var(--code);
-    border: 1px solid var(--border);
-    border-radius: 4px;
+.content code {
+    background: #100e0c;
     padding: 2px 6px;
-
-    color: #f0d6c3;
-    font-family:
-        "JetBrains Mono",
-        "Cascadia Code",
-        "Fira Code",
-        Consolas,
-        monospace;
-
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.9em;
 }
 
-pre {
-    margin: 22px 0;
-    padding: 18px;
-
-    overflow-x: auto;
-
-    background: var(--code);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-
-    line-height: 1.55;
-}
-
-pre code {
+.content pre code {
+    background: none;
     padding: 0;
-    border: 0;
-    background: transparent;
-
-    color: #ddd3cb;
-    font-size: 13px;
 }
 
-/* ------------------------------------------------------------
-   Tables
-   ------------------------------------------------------------ */
-
-.table-wrapper {
-    width: 100%;
+.table-wrap {
     overflow-x: auto;
-    margin: 22px 0;
+    margin: 20px 0;
 }
 
 table {
-    width: 100%;
     border-collapse: collapse;
-
-    border: 1px solid var(--border);
-    background: var(--background);
+    width: 100%;
 }
 
-th,
-td {
-    padding: 10px 13px;
-    border: 1px solid var(--border);
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 10px 14px;
     text-align: left;
 }
 
 th {
-    background: #211a15;
+    background: var(--bg-sidebar);
     color: var(--accent);
-    font-weight: 700;
 }
 
-tr:nth-child(even) td {
-    background: var(--table-alt);
+tr.row-even { background: #1a1613; }
+tr.row-odd { background: #141210; }
+
+footer.site-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-dim);
+    font-size: 0.85rem;
 }
 
-/* ------------------------------------------------------------
-   Lists
-   ------------------------------------------------------------ */
-
-ul,
-ol {
-    margin-top: 8px;
-    margin-bottom: 18px;
-    padding-left: 28px;
-}
-
-li {
-    margin: 4px 0;
-}
-
-/* ------------------------------------------------------------
-   Blockquotes
-   ------------------------------------------------------------ */
-
-blockquote {
-    margin: 20px 0;
-    padding: 10px 18px;
-
-    background: var(--blockquote);
-    border-left: 3px solid var(--accent);
-
-    color: #c5bbb3;
-}
-
-/* ------------------------------------------------------------
-   Footer
-   ------------------------------------------------------------ */
-
-.footer {
-    margin-top: 70px;
-    padding-top: 20px;
-
-    border-top: 1px solid var(--border);
-
-    color: var(--muted);
-    font-size: 12px;
-}
-
-/* ------------------------------------------------------------
-   Mobile
-   ------------------------------------------------------------ */
-
-@media (max-width: 800px) {
-    .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .layout {
-        display: block;
-    }
-
-    .content {
-        width: 100%;
-        margin-left: 0;
-        padding: 35px 22px 60px;
-    }
-
-    .nav {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .install-button {
-        margin-bottom: 5px;
-    }
-}
-
-    </style>
+</style>
 </head>
-
 <body>
-
 <div class="layout">
-
-    <aside class="sidebar">
-
-        <div class="logo">
-            <div class="logo-title">Viridium Linux</div>
-            <div class="logo-subtitle">Documentation</div>
-        </div>
-
-        <div class="nav-title">Documentation</div>
-
-        <nav class="nav">
-            <a href="https://github.io/">Home</a>
-<a href="https://github.io/installation/">Installation</a>
-<a href="https://github.io/configuration/">Configuration</a>
-<a href="https://github.io/vbuild/">vbuild</a>
-<a href="https://github.io/viridium/">viridium</a>
-<a href="https://github.io/architecture/" class="active">Architecture</a>
-<a href="https://github.io/boot-and-uefi/">Boot and UEFI</a>
-<a href="https://github.io/development/">Development</a>
-<a href="https://github.io/networking/">Networking</a>
-<a href="https://github.io/package-management/">Package management</a>
-<a href="https://github.io/troubleshooting/">Troubleshooting</a>
-<a href="https://github.io/faq/">FAQ</a>
-        </nav>
-
-        <a
-            class="install-button"
-            href="https://github.com"
-        >
-            Install Viridium Linux
-        </a>
-
-    </aside>
-
-    <main class="content">
-
-        <article class="article">
-            <p>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Architecture&lt;/h1&gt;&lt;p&gt;Viridium is built around the Arch Linux package ecosystem with a small set of custom tools layered on top.&lt;/p&gt;&lt;p&gt;The project does not attempt to replace the underlying Arch system. Instead, Viridium provides its own installation and management workflow while continuing to use the existing Arch infrastructure.&lt;/p&gt;&lt;h2&gt;Overview&lt;/h2&gt;&lt;p&gt;The main components are:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;                         Viridium Linux │ ┌─────────────────┴─────────────────┐ │                                   │ Installation                         System │                                   │ vinstall                     ┌───────────┴───────────┐ │                       │ vbuild                 viridium │                       │ ┌────────┴────────┐       ┌──────┴──────┐ │                 │       │             │ Arch repos            AUR   Maintenance   Diagnostics &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Each component has a specific purpose.&lt;/p&gt;&lt;h2&gt;vinstall&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;vinstall&lt;/code&gt; is responsible for creating a Viridium installation.&lt;/p&gt;&lt;p&gt;Its responsibilities include:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Disk selection&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Partition handling&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Filesystem setup&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Kernel installation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Base system installation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Hostname configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Timezone configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;User creation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code inline=""&gt;sudo&lt;/code&gt; configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;EFI configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Bootloader installation&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The installer runs from the Viridium live environment and installs the system onto the selected disk or existing partitions.&lt;/p&gt;&lt;p&gt;It is not responsible for normal system management after installation.&lt;/p&gt;&lt;h2&gt;vbuild&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;vbuild&lt;/code&gt; is the package-management layer.&lt;/p&gt;&lt;p&gt;Its main purpose is combining the two package sources used by Viridium:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;Official Arch repositories + AUR ↓ vbuild &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A traditional Arch setup often separates these:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;pacman → official repositories yay    → AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Viridium provides one interface instead.&lt;/p&gt;&lt;h3&gt;Package management flow&lt;/h3&gt;&lt;p&gt;A simplified package-management flow is:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;User │ ▼ vbuild │ ├──► Official repositories │ └──► AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is the central design decision behind &lt;code inline=""&gt;vbuild&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;It also allows Viridium to implement a faster package-management workflow than the traditional &lt;code inline=""&gt;pacman&lt;/code&gt; + AUR helper setup.&lt;/p&gt;&lt;h2&gt;viridium&lt;/h2&gt;&lt;p&gt;&lt;code inline=""&gt;viridium&lt;/code&gt; sits above the lower-level system tools.&lt;/p&gt;&lt;p&gt;It provides commands for:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Updating&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Cleaning&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Diagnostics&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;System information&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Package-manager locking&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Package-manager unlocking&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It can also act as a simple frontend for common &lt;code inline=""&gt;vbuild&lt;/code&gt; operations.&lt;/p&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;viridium update │ ▼ vbuild -Syu &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The purpose is to provide simple commands for common operations without adding another package-management implementation.&lt;/p&gt;&lt;h2&gt;pacman and yay&lt;/h2&gt;&lt;p&gt;The original Arch package tools still exist underneath the Viridium package-management system.&lt;/p&gt;&lt;p&gt;They are locked by default rather than removed.&lt;/p&gt;&lt;p&gt;The relationship is therefore:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;                    Package management │ vbuild /       \ /         \ Arch repositories   AUR</p>
-<p>pacman / yay │ compatibility / temporary use &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code inline=""&gt;viridium&lt;/code&gt; controls whether the original tools are accessible.&lt;/p&gt;&lt;p&gt;They can be temporarily unlocked when compatibility, development, or debugging requires them.&lt;/p&gt;&lt;h2&gt;NetworkManager&lt;/h2&gt;&lt;p&gt;Viridium uses NetworkManager for network configuration.&lt;/p&gt;&lt;p&gt;NetworkManager is separate from the Viridium package-management tools and provides the normal Linux networking layer.&lt;/p&gt;&lt;p&gt;Common interfaces include:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;nmtui nmcli &lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;systemd&lt;/h2&gt;&lt;p&gt;Viridium uses systemd for system initialization and service management.&lt;/p&gt;&lt;p&gt;This includes normal systemd functionality such as:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-bash"&gt;systemctl &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Services can therefore be managed using the standard systemd tools.&lt;/p&gt;&lt;h2&gt;systemd-boot&lt;/h2&gt;&lt;p&gt;Viridium uses systemd-boot for UEFI booting.&lt;/p&gt;&lt;p&gt;The installer places the required boot files on the EFI System Partition and creates the Viridium boot entry.&lt;/p&gt;&lt;p&gt;Existing EFI entries can remain alongside it.&lt;/p&gt;&lt;h2&gt;Design principles&lt;/h2&gt;&lt;p&gt;Viridium's architecture is based around a few simple ideas.&lt;/p&gt;&lt;h3&gt;Keep the Arch ecosystem&lt;/h3&gt;&lt;p&gt;Viridium does not need to maintain a completely separate package ecosystem.&lt;/p&gt;&lt;p&gt;The Arch repositories and AUR already provide the packages required by the system.&lt;/p&gt;&lt;h3&gt;One package manager&lt;/h3&gt;&lt;p&gt;Normal package management goes through &lt;code inline=""&gt;vbuild&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;This combines the official repositories and AUR and avoids requiring separate tools for normal package operations.&lt;/p&gt;&lt;h3&gt;Keep system tools separate&lt;/h3&gt;&lt;p&gt;&lt;code inline=""&gt;vinstall&lt;/code&gt;, &lt;code inline=""&gt;vbuild&lt;/code&gt;, and &lt;code inline=""&gt;viridium&lt;/code&gt; have different responsibilities.&lt;/p&gt;&lt;pre&gt;&lt;code class="language-text"&gt;vinstall   → installation vbuild     → packages viridium   → system management &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This separation keeps each component relatively focused.&lt;/p&gt;&lt;h3&gt;Don't remove the underlying tools&lt;/h3&gt;&lt;p&gt;Viridium does not permanently remove &lt;code inline=""&gt;pacman&lt;/code&gt; or &lt;code inline=""&gt;yay&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;They remain available for compatibility and development purposes, but are locked during normal operation.&lt;/p&gt;&lt;h2&gt;Component summary&lt;/h2&gt; Component | Responsibility -- | -- vinstall | Installation vbuild | Package management viridium | System management pacman | Underlying Arch package manager yay | AUR helper / compatibility NetworkManager | Networking systemd | System and services systemd-boot | UEFI boot</p>
+  <aside class="sidebar">
+    <h1>Viridium Linux</h1>
+    <a class="install-btn" href="https://github.com/ViridiumLinux/ViridiumLinux.github.io/releases">Download ISO</a>
+    <nav>
+      <ul>
+        <li><a class="link" href="https://viridiumlinux.github.io/">Home</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/installation/">Installation</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/configuration/">Configuration</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/vbuild/">vbuild</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/viridium/">viridium</a></li>
+<li><a class="link active" href="https://viridiumlinux.github.io/architecture/">Architecture</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/boot-and-uefi/">Boot and UEFI</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/development/">Development</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/networking/">Networking</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/package-management/">Package management</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/troubleshooting/">Troubleshooting</a></li>
+<li><a class="link" href="https://viridiumlinux.github.io/faq/">FAQ</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main class="content">
+    <p>&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Architecture&lt;/h1&gt;&lt;p&gt;Viridium is built around the Arch Linux package ecosystem with a small set of custom tools layered on top.&lt;/p&gt;&lt;p&gt;The project does not attempt to replace the underlying Arch system. Instead, Viridium provides its own installation and management workflow while continuing to use the existing Arch infrastructure.&lt;/p&gt;&lt;h2&gt;Overview&lt;/h2&gt;&lt;p&gt;The main components are:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;                         Viridium Linux │ ┌─────────────────┴─────────────────┐ │                                   │ Installation                         System │                                   │ vinstall                     ┌───────────┴───────────┐ │                       │ vbuild                 viridium │                       │ ┌────────┴────────┐       ┌──────┴──────┐ │                 │       │             │ Arch repos            AUR   Maintenance   Diagnostics &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Each component has a specific purpose.&lt;/p&gt;&lt;h2&gt;vinstall&lt;/h2&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;vinstall&lt;/code&gt; is responsible for creating a Viridium installation.&lt;/p&gt;&lt;p&gt;Its responsibilities include:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Disk selection&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Partition handling&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Filesystem setup&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Kernel installation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Base system installation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Hostname configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Timezone configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;User creation&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;sudo&lt;/code&gt; configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;EFI configuration&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Bootloader installation&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The installer runs from the Viridium live environment and installs the system onto the selected disk or existing partitions.&lt;/p&gt;&lt;p&gt;It is not responsible for normal system management after installation.&lt;/p&gt;&lt;h2&gt;vbuild&lt;/h2&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;vbuild&lt;/code&gt; is the package-management layer.&lt;/p&gt;&lt;p&gt;Its main purpose is combining the two package sources used by Viridium:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;Official Arch repositories + AUR ↓ vbuild &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A traditional Arch setup often separates these:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;pacman → official repositories yay    → AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Viridium provides one interface instead.&lt;/p&gt;&lt;h3&gt;Package management flow&lt;/h3&gt;&lt;p&gt;A simplified package-management flow is:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;User │ ▼ vbuild │ ├──► Official repositories │ └──► AUR &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is the central design decision behind &lt;code inline=&quot;&quot;&gt;vbuild&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;It also allows Viridium to implement a faster package-management workflow than the traditional &lt;code inline=&quot;&quot;&gt;pacman&lt;/code&gt; + AUR helper setup.&lt;/p&gt;&lt;h2&gt;viridium&lt;/h2&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;viridium&lt;/code&gt; sits above the lower-level system tools.&lt;/p&gt;&lt;p&gt;It provides commands for:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Updating&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Cleaning&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Diagnostics&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;System information&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Package-manager locking&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Package-manager unlocking&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It can also act as a simple frontend for common &lt;code inline=&quot;&quot;&gt;vbuild&lt;/code&gt; operations.&lt;/p&gt;&lt;p&gt;For example:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;viridium update │ ▼ vbuild -Syu &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The purpose is to provide simple commands for common operations without adding another package-management implementation.&lt;/p&gt;&lt;h2&gt;pacman and yay&lt;/h2&gt;&lt;p&gt;The original Arch package tools still exist underneath the Viridium package-management system.&lt;/p&gt;&lt;p&gt;They are locked by default rather than removed.&lt;/p&gt;&lt;p&gt;The relationship is therefore:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;                    Package management │ vbuild /       \ /         \ Arch repositories   AUR</p>
+<p>pacman / yay │ compatibility / temporary use &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;viridium&lt;/code&gt; controls whether the original tools are accessible.&lt;/p&gt;&lt;p&gt;They can be temporarily unlocked when compatibility, development, or debugging requires them.&lt;/p&gt;&lt;h2&gt;NetworkManager&lt;/h2&gt;&lt;p&gt;Viridium uses NetworkManager for network configuration.&lt;/p&gt;&lt;p&gt;NetworkManager is separate from the Viridium package-management tools and provides the normal Linux networking layer.&lt;/p&gt;&lt;p&gt;Common interfaces include:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;nmtui nmcli &lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;systemd&lt;/h2&gt;&lt;p&gt;Viridium uses systemd for system initialization and service management.&lt;/p&gt;&lt;p&gt;This includes normal systemd functionality such as:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;systemctl &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Services can therefore be managed using the standard systemd tools.&lt;/p&gt;&lt;h2&gt;systemd-boot&lt;/h2&gt;&lt;p&gt;Viridium uses systemd-boot for UEFI booting.&lt;/p&gt;&lt;p&gt;The installer places the required boot files on the EFI System Partition and creates the Viridium boot entry.&lt;/p&gt;&lt;p&gt;Existing EFI entries can remain alongside it.&lt;/p&gt;&lt;h2&gt;Design principles&lt;/h2&gt;&lt;p&gt;Viridium&#x27;s architecture is based around a few simple ideas.&lt;/p&gt;&lt;h3&gt;Keep the Arch ecosystem&lt;/h3&gt;&lt;p&gt;Viridium does not need to maintain a completely separate package ecosystem.&lt;/p&gt;&lt;p&gt;The Arch repositories and AUR already provide the packages required by the system.&lt;/p&gt;&lt;h3&gt;One package manager&lt;/h3&gt;&lt;p&gt;Normal package management goes through &lt;code inline=&quot;&quot;&gt;vbuild&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;This combines the official repositories and AUR and avoids requiring separate tools for normal package operations.&lt;/p&gt;&lt;h3&gt;Keep system tools separate&lt;/h3&gt;&lt;p&gt;&lt;code inline=&quot;&quot;&gt;vinstall&lt;/code&gt;, &lt;code inline=&quot;&quot;&gt;vbuild&lt;/code&gt;, and &lt;code inline=&quot;&quot;&gt;viridium&lt;/code&gt; have different responsibilities.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot;&gt;vinstall   → installation vbuild     → packages viridium   → system management &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This separation keeps each component relatively focused.&lt;/p&gt;&lt;h3&gt;Don&#x27;t remove the underlying tools&lt;/h3&gt;&lt;p&gt;Viridium does not permanently remove &lt;code inline=&quot;&quot;&gt;pacman&lt;/code&gt; or &lt;code inline=&quot;&quot;&gt;yay&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;They remain available for compatibility and development purposes, but are locked during normal operation.&lt;/p&gt;&lt;h2&gt;Component summary&lt;/h2&gt; Component | Responsibility -- | -- vinstall | Installation vbuild | Package management viridium | System management pacman | Underlying Arch package manager yay | AUR helper / compatibility NetworkManager | Networking systemd | System and services systemd-boot | UEFI boot</p>
 <p>&lt;p&gt;This separation is the basis of the Viridium userspace.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</p>
-
-            <div class="footer">
-                Viridium Linux · Documentation
-            </div>
-        </article>
-
-    </main>
-
+    <footer class="site-footer">
+      <p>Viridium Linux documentation.</p>
+    </footer>
+  </main>
 </div>
-
 </body>
 </html>
