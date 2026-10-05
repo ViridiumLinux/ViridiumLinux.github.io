@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vbuild guide | Viridium Linux</title>
+<meta name="description" content="How to use vbuild, the pacman-like package manager in Viridium Linux, including AUR packages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 H230 C330 130 450 200 600 300 C700 370 780 430 900 520 C1000 600 1100 640 1250 720 L1920 1080 H0 Z" fill="#03271a" opacity=".9"/>
+    <path d="M0 0 C90 60 130 170 200 330 C290 560 330 640 390 760 C440 850 480 900 510 950 L420 1080 H0 Z" fill="#0a3f2b" opacity=".85"/>
+    <path d="M1920 0 V745 C1750 750 1550 700 1430 620 C1330 560 1250 520 1190 500 L1230 300 C1450 260 1560 130 1700 40 C1760 10 1840 0 1920 0 Z" fill="#0bb852" opacity=".55"/>
+    <path d="M1920 380 V745 C1750 750 1550 700 1430 620 C1520 540 1640 400 1780 390 C1840 388 1890 388 1920 380 Z" fill="#0a9a48" opacity=".55"/>
+  </svg>
+</div>
+
+<nav>
+  <a class="brand" href="index.html"><span class="mini-logo"></span> Viridium Linux</a>
+  <ul><li><a class="link" href="index.html">Home</a></li><li><a class="link" href="download.html">Download</a></li><li><a class="link active" href="vbuild.html">vbuild</a></li><li><a class="link" href="faq.html">FAQ</a></li></ul>
+</nav>
+
+<header class="page-head"><div class="kicker">Packages</div><h1>vbuild guide</h1><p class="lead">Everything you need to install, update and remove software on Viridium Linux.</p></header>
+
+<main>
+<section id="overview"><div class="kicker">Overview</div><h2>One command, three sources</h2>
+<p><strong>vbuild</strong> is Viridium's pacman-like package manager and uses the same flags as pacman. <code>-S</code> checks the Viridium repo, the Arch repos and the AUR automatically, so you never need to know where a package lives.</p></section>
+<section id="flags"><div class="kicker">Reference</div><h2>Flags</h2>
+<div class="scroll"><table><thead><tr><th>Flag</th><th>What it does</th><th>Example</th></tr></thead><tbody><tr><td><code>-S</code></td><td>Installs packages</td><td><code>vbuild -S htop</code></td></tr><tr><td><code>-Sy</code></td><td>Updates repos</td><td><code>vbuild -Sy</code></td></tr><tr><td><code>-Syu</code></td><td>Updates repos and packages</td><td><code>vbuild -Syu</code></td></tr><tr><td><code>-R</code></td><td>Removes packages</td><td><code>vbuild -R htop</code></td></tr><tr><td><code>-Rns</code></td><td>Deletes packages and dependencies</td><td><code>vbuild -Rns htop</code></td></tr><tr><td><code>-Ss</code></td><td>Searches for packages</td><td><code>vbuild -Ss browser</code></td></tr><tr><td><code>-Q</code></td><td>Lists installed packages</td><td><code>vbuild -Q</code></td></tr><tr><td><code>-Qi</code></td><td>Shows details of an installed package</td><td><code>vbuild -Qi htop</code></td></tr></tbody></table></div></section>
+<section id="examples"><div class="kicker">In practice</div><h2>Examples</h2>
+<p>Update everything, install two packages from the repos, then install and remove a package from the AUR:</p>
+<div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">vbuild</span></div><pre><span class="prompt">$ </span>vbuild -Syu
+<span class="prompt">$ </span>vbuild -S neovim htop
+<span class="prompt">$ </span>vbuild -S google-chrome   # from the AUR
+<span class="prompt">$ </span>vbuild -Rns google-chrome</pre></div>
+<div class="note"><strong>Update with <code>-Syu</code>.</strong> Viridium is rolling release. Avoid running <code>vbuild -Sy</code> on its own and then installing something; refresh and upgrade together with <code>-Syu</code> to prevent partial upgrades.</div></section>
+<section id="aur"><div class="kicker">Community packages</div><h2>Using the AUR</h2>
+<p>There is nothing extra to set up. If a package is not in the Viridium or Arch repos, <code>vbuild -S</code> finds it in the AUR and builds it for you.</p>
+<div class="note">AUR packages are submitted by users and built from source, so builds can take a while and quality varies. Read a package's PKGBUILD on its AUR page before installing it.</div></section>
+</main>
+
+<footer>
+  <p><strong>Viridium Linux</strong> &mdash; <em>If it's not broken, don't fix it.</em></p>
+</footer>
+
+</body>
+</html>

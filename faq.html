@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ and troubleshooting | Viridium Linux</title>
+<meta name="description" content="Answers to common questions about installing and using Viridium Linux.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 H230 C330 130 450 200 600 300 C700 370 780 430 900 520 C1000 600 1100 640 1250 720 L1920 1080 H0 Z" fill="#03271a" opacity=".9"/>
+    <path d="M0 0 C90 60 130 170 200 330 C290 560 330 640 390 760 C440 850 480 900 510 950 L420 1080 H0 Z" fill="#0a3f2b" opacity=".85"/>
+    <path d="M1920 0 V745 C1750 750 1550 700 1430 620 C1330 560 1250 520 1190 500 L1230 300 C1450 260 1560 130 1700 40 C1760 10 1840 0 1920 0 Z" fill="#0bb852" opacity=".55"/>
+    <path d="M1920 380 V745 C1750 750 1550 700 1430 620 C1520 540 1640 400 1780 390 C1840 388 1890 388 1920 380 Z" fill="#0a9a48" opacity=".55"/>
+  </svg>
+</div>
+
+<nav>
+  <a class="brand" href="index.html"><span class="mini-logo"></span> Viridium Linux</a>
+  <ul><li><a class="link" href="index.html">Home</a></li><li><a class="link" href="download.html">Download</a></li><li><a class="link" href="vbuild.html">vbuild</a></li><li><a class="link active" href="faq.html">FAQ</a></li></ul>
+</nav>
+
+<header class="page-head"><div class="kicker">Help</div><h1>FAQ and troubleshooting</h1><p class="lead">Quick answers about installing, hardware, packages and fixing common problems.</p></header>
+
+<main>
+('<section><div class="kicker">The basics</div><h2>General</h2><details><summary>What is Viridium Linux?</summary><div class="ans"><p>An extremely fast, speed-oriented minimal Linux system that anyone can use. It has its own repo for rolling release updates, plus full Arch repo and AUR support.</p></div></details><details><summary>Why is there no desktop after installing?</summary><div class="ans"><p>The install is deliberately minimal, with no desktop environment or window manager, to keep the system fast. Add the one you want with vbuild, then enable its display manager with systemd. For example, for GNOME, as root:</p><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">root</span></div><pre><span class="prompt"># </span>vbuild -S gnome\n<span class="prompt"># </span>systemctl enable --now gdm</pre></div></div></details><details><summary>Which kernel should I choose?</summary><div class="ans"><p>vinstall offers four. <code>linux</code> is the mainline kernel, <code>linux-lts</code> favours long-term stability, <code>linux-zen</code> is tuned for responsiveness, and <code>linux-hardened</code> focuses on security.</p></div></details><details><summary>Is Viridium rolling release?</summary><div class="ans"><p>Yes. Keep your system current with <code>vbuild -Syu</code>.</p></div></details></section>', '<section><div class="kicker">Before you install</div><h2>Hardware</h2><details><summary>What are the minimum requirements?</summary><div class="ans"><p>10 GB of storage, 1 GB of RAM and a fairly modern x86 CPU such as an Intel Core or AMD Ryzen.</p></div></details><details><summary>Does Viridium run on ARM?</summary><div class="ans"><p>Not yet. ARM support is a work in progress and will be finished in the future.</p></div></details><details><summary>Do I need a dedicated graphics card?</summary><div class="ans"><p>No. An AMD GPU is recommended over NVIDIA because NVIDIA support on Linux is not great, but a dedicated card is not required.</p></div></details></section>', '<section><div class="kicker">When something goes wrong</div><h2>Troubleshooting</h2><details><summary>vbuild says it cannot find a package</summary><div class="ans"><p>Check the spelling and search with <code>vbuild -Ss name</code>. If it still fails, run <code>vbuild -Syu</code> to refresh the repos and upgrade, then try again.</p></div></details><details><summary>An AUR package failed to build</summary><div class="ans"><p>Read the end of the build output for the error. Run <code>vbuild -Syu</code> and retry, since outdated dependencies are a common cause, and check the comments on the package\'s AUR page.</p></div></details><details><summary>The system freezes or feels unstable</summary><div class="ans"><p>Less than 1 GB of RAM can cause instability. If you have less, use a lightweight window manager instead of a full desktop environment.</p></div></details><details><summary>I have NVIDIA graphics problems</summary><div class="ans"><p>Update with <code>vbuild -Syu</code> and install the NVIDIA driver that matches your kernel: <code>nvidia</code> for linux, <code>nvidia-lts</code> for linux-lts, or <code>nvidia-dkms</code> for linux-zen and linux-hardened. An AMD GPU avoids most of these issues.</p></div></details><details><summary>Removed packages left dependencies behind</summary><div class="ans"><p>Use <code>vbuild -Rns package</code> instead of <code>-R</code>, which also deletes the dependencies.</p></div></details><details><summary>Where do I report a bug?</summary><div class="ans"><p>Open an issue on the <a href="https://github.com/Viridium01/Viridium-Linux/issues">GitHub issue tracker</a>.</p></div></details></section>')
+</main>
+
+<footer>
+  <p><strong>Viridium Linux</strong> &mdash; <em>If it's not broken, don't fix it.</em></p>
+</footer>
+
+</body>
+</html>

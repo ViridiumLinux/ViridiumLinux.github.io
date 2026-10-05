@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download | Viridium Linux</title>
+<meta name="description" content="Download the Viridium Linux ISO and install it in a few minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 H230 C330 130 450 200 600 300 C700 370 780 430 900 520 C1000 600 1100 640 1250 720 L1920 1080 H0 Z" fill="#03271a" opacity=".9"/>
+    <path d="M0 0 C90 60 130 170 200 330 C290 560 330 640 390 760 C440 850 480 900 510 950 L420 1080 H0 Z" fill="#0a3f2b" opacity=".85"/>
+    <path d="M1920 0 V745 C1750 750 1550 700 1430 620 C1330 560 1250 520 1190 500 L1230 300 C1450 260 1560 130 1700 40 C1760 10 1840 0 1920 0 Z" fill="#0bb852" opacity=".55"/>
+    <path d="M1920 380 V745 C1750 750 1550 700 1430 620 C1520 540 1640 400 1780 390 C1840 388 1890 388 1920 380 Z" fill="#0a9a48" opacity=".55"/>
+  </svg>
+</div>
+
+<nav>
+  <a class="brand" href="index.html"><span class="mini-logo"></span> Viridium Linux</a>
+  <ul><li><a class="link" href="index.html">Home</a></li><li><a class="link active" href="download.html">Download</a></li><li><a class="link" href="vbuild.html">vbuild</a></li><li><a class="link" href="faq.html">FAQ</a></li></ul>
+</nav>
+
+<header class="page-head"><div class="kicker">Get Viridium</div><h1>Download</h1><p class="lead">Download the ISO, write it to a USB drive and boot into the live environment.</p></header>
+
+<main>
+<section id="iso"><div class="kicker">Latest release</div><h2>Get the ISO</h2>
+<div class="cta"><!-- TODO: replace with your real ISO / releases URL -->
+<a class="btn primary" href="https://github.com/Viridium01/Viridium-Linux/releases/latest">Download the ISO</a><a class="btn ghost" href="index.html#requirements">Check requirements</a></div>
+<div class="grid"><div class="card stat"><div class="big">10 GB</div><div class="label">Storage</div></div><div class="card stat"><div class="big">1 GB</div><div class="label">RAM</div></div><div class="card stat"><div class="big">x86</div><div class="label">Intel Core or AMD Ryzen. No ARM yet.</div></div></div></section>
+<section id="usb"><div class="kicker">Next steps</div><h2>Install it</h2>
+<ol class="steps"><li>Write the ISO to a USB drive with balenaEtcher or Ventoy (see below).</li><li>Boot from the USB and log in as <strong>root</strong>.</li><li>Run <code>vinstall</code> and follow the prompts for kernel, timezone, username and password.</li></ol>
+<div class="repo-grid">
+<div class="card"><h3>balenaEtcher</h3><p>The simplest option. Choose the ISO, choose your USB drive, then click Flash. Works on Windows, macOS and Linux. <a href="https://balena.io/etcher">Get balenaEtcher</a></p></div>
+<div class="card"><h3>Ventoy</h3><p>Install Ventoy to the USB drive once, then copy the ISO onto it like any file and pick it from the boot menu. One drive can hold several ISOs. Works on Windows and Linux. <a href="https://www.ventoy.net/">Get Ventoy</a></p></div>
+</div>
+<div class="note"><strong>Back up the drive first.</strong> Both tools erase the USB drive when you set it up, so check you've picked the right one.</div>
+<p>After installing, read the <a href="vbuild.html">vbuild guide</a> to add software, or the <a href="faq.html">FAQ</a> if you get stuck.</p></section>
+</main>
+
+<footer>
+  <p><strong>Viridium Linux</strong> &mdash; <em>If it's not broken, don't fix it.</em></p>
+</footer>
+
+</body>
+</html>
