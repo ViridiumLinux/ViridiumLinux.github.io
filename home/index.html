@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viridium Linux Documentation</title>
+<meta name="description" content="Viridium Linux: an extremely fast, speed-oriented minimal Linux system. If it's not broken, don't fix it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 H230 C330 130 450 200 600 300 C700 370 780 430 900 520 C1000 600 1100 640 1250 720 L1920 1080 H0 Z" fill="#03271a" opacity=".9"/>
+    <path d="M0 0 C90 60 130 170 200 330 C290 560 330 640 390 760 C440 850 480 900 510 950 L420 1080 H0 Z" fill="#0a3f2b" opacity=".85"/>
+    <path d="M1920 0 V745 C1750 750 1550 700 1430 620 C1330 560 1250 520 1190 500 L1230 300 C1450 260 1560 130 1700 40 C1760 10 1840 0 1920 0 Z" fill="#0bb852" opacity=".55"/>
+    <path d="M1920 380 V745 C1750 750 1550 700 1430 620 C1520 540 1640 400 1780 390 C1840 388 1890 388 1920 380 Z" fill="#0a9a48" opacity=".55"/>
+  </svg>
+</div>
+
+<nav>
+  <a class="brand" href="./"><span class="mini-logo"></span> Viridium Linux</a>
+  <ul><li><a class="link active" href="./">Home</a></li><li><a class="link" href="download/">Download</a></li><li><a class="link" href="vbuild/">vbuild</a></li><li><a class="link" href="faq/">FAQ</a></li></ul>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <h1>Viridium Linux</h1>
+    <p class="tagline">If it's not broken, don't fix it.</p>
+    <p class="lead">An extremely fast, speed-oriented system that anyone can use. A very minimal install, a pacman-like package manager, and full Arch and AUR support out of the box.</p>
+    <div class="cta">
+      <a class="btn primary" href="#installation">Get started</a>
+      <a class="btn ghost" href="#requirements">System requirements</a>
+    </div>
+  </div>
+  <div class="logo-wrap"><div class="logo" role="img" aria-label="Viridium Linux logo"></div></div>
+</header>
+
+<main>
+
+  <section id="requirements">
+    <div class="kicker">Before you begin</div>
+    <h2>System requirements</h2>
+    <p>To run Viridium Linux you will need the following at a minimum:</p>
+    <div class="grid">
+      <div class="card stat"><div class="big">10 GB</div><div class="label">Storage</div></div>
+      <div class="card stat"><div class="big">1 GB</div><div class="label">RAM. Anything below this may cause instability and issues.</div></div>
+      <div class="card stat"><div class="big">x86</div><div class="label">A fairly modern CPU, e.g. Intel Core or AMD Ryzen.</div></div>
+      <div class="card stat warn"><div class="big">No ARM</div><div class="label">Not supported <em>yet</em>. It is a work in progress and will be finished sometime in the future.</div></div>
+    </div>
+    <div class="note"><strong>Graphics:</strong> An AMD GPU is recommended over an NVIDIA GPU, as NVIDIA's support on Linux isn't great. You do not need a dedicated graphics card to run Viridium; it isn't a requirement.</div>
+  </section>
+
+  <section id="installation">
+    <div class="kicker">Setup</div>
+    <h2>Installation</h2>
+    <p>Installing Viridium Linux is very easy. Need the ISO? Head to the <a href="download/">download page</a>.</p>
+    <ol class="steps">
+      <li>Boot into the live environment and log in as <strong>root</strong>.</li>
+      <li>Run the installer command shown below.</li>
+      <li>Follow the prompts to finish setup.</li>
+    </ol>
+    <div class="terminal">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">root@viridium-live</span></div>
+<pre><span class="prompt"># </span>vinstall</pre>
+    </div>
+    <p>The command walks you through the installation, letting you choose:</p>
+    <ul class="pills">
+      <li>Your kernel</li>
+      <li>Your timezone</li>
+      <li>Your username</li>
+      <li>Your password</li>
+    </ul>
+    <p>The rest of the installation is pre-configured to install a very minimal system, <strong>without any desktop environment or window manager</strong>. The point of a minimal install is Viridium's goal: an extremely fast, speed-oriented system that anyone can use.</p>
+  </section>
+
+  <section id="package-manager">
+    <div class="kicker">Packages</div>
+    <h2>Package manager</h2>
+    <p>The package manager in Viridium Linux is named <strong>vbuild</strong>. It is a pacman-like package manager, for ease of use, and it uses the same flags as pacman.</p>
+    <table>
+      <thead><tr><th>Flag</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>-S</code></td><td>Installs things</td></tr>
+        <tr><td><code>-Rns</code></td><td>Deletes packages and dependencies</td></tr>
+        <tr><td><code>-R</code></td><td>Removes packages</td></tr>
+        <tr><td><code>-Syu</code></td><td>Updates repos and packages</td></tr>
+        <tr><td><code>-Sy</code></td><td>Updates repos</td></tr>
+      </tbody>
+    </table>
+    <div class="terminal">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="t">vbuild</span></div>
+<pre><span class="prompt">$ </span>vbuild -Syu
+<span class="prompt">$ </span>vbuild -S &lt;package&gt;
+<span class="prompt">$ </span>vbuild -Rns &lt;package&gt;</pre>
+    </div>
+    <p>Want every flag and AUR examples? Read the <a href="vbuild/">full vbuild guide</a>, or check the <a href="faq/">FAQ</a>.</p>
+  </section>
+
+  <section id="repos">
+    <div class="kicker">Software sources</div>
+    <h2>Repos</h2>
+    <p>Viridium has its own repo, mainly for easy rolling release updates. It also has full Arch repo support, and full AUR support out of the box!</p>
+    <div class="repo-grid">
+      <div class="card"><h3>Viridium repo</h3><p>Viridium's own repository, mainly for easy rolling release updates.</p></div>
+      <div class="card"><h3>Arch repos</h3><p>Full Arch repo support.</p></div>
+      <div class="card"><h3>AUR</h3><p>Full AUR support out of the box.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Viridium Linux</strong> &mdash; <em>If it's not broken, don't fix it.</em></p>
+</footer>
+
+</body>
+</html>
